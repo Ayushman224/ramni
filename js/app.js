@@ -4,129 +4,64 @@
  * ==========================================================================
  */
 
-// Mock Databases
-const SERVICES = [
-    {
-        id: 'blouse',
-        name: 'Designer Blouse & Petticoat',
-        category: 'Indian Traditional',
-        description: 'Stitching of gorgeous designer blouses (padded, backless, collar neck, halter neck, back-dori, heavy embroidery fitting) with matching satin petticoats.',
-        startingPrice: 350,
-        image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&auto=format&fit=crop&q=80'
-    },
-    {
-        id: 'salwar-suit',
-        name: 'Salwar Suits & Anarkalis',
-        category: 'Suits & Kurtis',
-        description: 'Custom stitched Patiala suits, Anarkali gowns, straight suits, palazzo suits, and Punjabi suits tailored exactly to your measurements with canvas collars.',
-        startingPrice: 650,
-        image: 'https://images.unsplash.com/photo-1608748010899-18f300247112?w=600&auto=format&fit=crop&q=80'
-    },
-    {
-        id: 'lehenga',
-        name: 'Wedding Lehenga & Ghagras',
-        category: 'Bridal & Party Wear',
-        description: 'Custom heavy bridal lehenga stitching with boutique lining, can-can mesh installation, customized waist hangings (latkans), and dupatta draping border attachment.',
-        startingPrice: 2499,
-        image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&auto=format&fit=crop&q=80'
-    },
-    {
-        id: 'kurti',
-        name: 'Casual & Office Wear Kurtis',
-        category: 'Suits & Kurtis',
-        description: 'Daily wear, formal office wear, short and long kurtis stitched with trendy necklines, sleeve designs, and pockets.',
-        startingPrice: 299,
-        image: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=600&auto=format&fit=crop&q=80'
-    },
-    {
-        id: 'party-wear',
-        name: 'Custom Gowns & Party Outfits',
-        category: 'Bridal & Party Wear',
-        description: 'Premium floor-length western gowns, Indo-western crop tops with skirts, designer drape sarees, and elegant wedding guest party wear.',
-        startingPrice: 1199,
-        image: 'https://images.unsplash.com/photo-1621184455862-c163dfb30e0f?w=600&auto=format&fit=crop&q=80'
-    },
-    {
-        id: 'alterations',
-        name: 'Boutique Alterations & Styling',
-        category: 'Services',
-        description: 'Breathe new life into your old clothes. We offer resizing, fit corrections, shoulder adjustments, border sewing, zipper repairs, and custom conversions.',
-        startingPrice: 99,
-        image: 'https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=600&auto=format&fit=crop&q=80'
-    }
-];
+const APP_CONFIG = window.SiteConfig || {};
+const SERVICES = APP_CONFIG.services || [];
+const DESIGNS = APP_CONFIG.designs || [];
+const PRICING = APP_CONFIG.pricing || [];
+const PAGE_METADATA = APP_CONFIG.pageMetadata || {};
+const DEFAULT_TESTIMONIALS = APP_CONFIG.defaultTestimonials || [];
+const FAQS = APP_CONFIG.faqs || [];
+const BUSINESS_NAME = APP_CONFIG.businessName || 'Your Boutique Name';
+const CITY = APP_CONFIG.city || 'Gorakhpur';
+const STATE = APP_CONFIG.state || 'Uttar Pradesh';
+const SERVICE_AREA = APP_CONFIG.serviceArea || 'Gorakhpur City';
+const ADDRESS = APP_CONFIG.address || '123, Park Road, Civil Lines, Gorakhpur';
+const PHONE_DISPLAY = APP_CONFIG.phoneDisplay || '+91 98765 43210';
+const PHONE_HREF = APP_CONFIG.getPhoneHref ? APP_CONFIG.getPhoneHref() : 'tel:+919876543210';
+const EMAIL = APP_CONFIG.email || 'support@example.com';
+const WHATSAPP_MESSAGE = APP_CONFIG.whatsappMessage || 'Hello, I want help with boutique stitching services.';
+const WHATSAPP_SUPPORT_MESSAGE = APP_CONFIG.whatsappSupportMessage || 'Hello, I need support for my boutique stitching order.';
+const WHATSAPP_PRICE_MESSAGE = APP_CONFIG.whatsappPriceMessage || 'Hello, I need exact pricing for my tailoring order.';
+const WHATSAPP_CONTACT_MESSAGE = APP_CONFIG.whatsappContactMessage || 'Hello, I want to contact the boutique for stitching services.';
+const WHATSAPP_URL = APP_CONFIG.getWhatsAppUrl ? APP_CONFIG.getWhatsAppUrl() : `https://wa.me/919876543210?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+const FOOTER_DESC = APP_CONFIG.footerDescription || 'Premium women’s boutique tailoring service in Gorakhpur for blouse, lehenga, suits, bridal wear, alterations, and custom designs.';
 
-const DESIGNS = [
-    { id: 1, title: 'Intricate Bridal Lehenga', category: 'Lehenga', style: 'Bridal Heavy Can-can', likes: 142, image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&auto=format&fit=crop&q=80' },
-    { id: 2, title: 'Princess Cut Padded Blouse', category: 'Blouse', style: 'Sweetheart Neck, Dori', likes: 88, image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&auto=format&fit=crop&q=80' },
-    { id: 3, title: 'Floral Silk Salwar Suit', category: 'Suit', style: 'Straight Cut, Pant Plazo', likes: 64, image: 'https://images.unsplash.com/photo-1608748010899-18f300247112?w=600&auto=format&fit=crop&q=80' },
-    { id: 4, title: 'Gold Border Designer Saree Blouse', category: 'Blouse', style: 'Deep back U-Neck', likes: 110, image: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=600&auto=format&fit=crop&q=80' },
-    { id: 5, title: 'Chikankari Suit with Lace', category: 'Suit', style: 'V-neck border styling', likes: 92, image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600&auto=format&fit=crop&q=80' },
-    { id: 6, title: 'Heavy Zardozi Bridal Blouse', category: 'Blouse', style: 'Sheer Back, Elbow Sleeve', likes: 215, image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&auto=format&fit=crop&q=80' },
-    { id: 7, title: 'Pastel Lehenga with Heavy Latkans', category: 'Lehenga', style: 'Double Dupatta Styling', likes: 168, image: 'https://images.unsplash.com/photo-1618220179428-22790b461013?w=600&auto=format&fit=crop&q=80' },
-    { id: 8, title: 'Indo-Western Crop Top Gown', category: 'Bridal', style: 'One-shoulder asymmetric', likes: 79, image: 'https://images.unsplash.com/photo-1621184455862-c163dfb30e0f?w=600&auto=format&fit=crop&q=80' }
-];
-
-const PRICING = [
-    {
-        name: 'Blouse Stitching',
-        price: '350',
-        icon: 'fas fa-cut',
-        featured: false,
-        features: ['Perfect fit guarantee', 'Inner premium lining stitching', 'Simple round/square back design', 'Double stitching inside', 'Overlock stitch finish']
-    },
-    {
-        name: 'Salwar Suit Tailoring',
-        price: '650',
-        icon: 'fas fa-scissors',
-        featured: true,
-        features: ['Stitching of Top & Bottom', 'Choice of Salwar/Pant/Palazzo', 'Front/Back Neck Canvas styling', 'Perfect armhole tailoring', 'Overlock & side-slit lining']
-    },
-    {
-        name: 'Designer Blouse Premium',
-        price: '750',
-        icon: 'fas fa-gem',
-        featured: false,
-        features: ['Padded princess cut setup', 'Trendy neck designs (Halter, Collar)', 'Backless / Deep neck with dori', 'Border border attachment', 'Custom measurements adjustment']
-    },
-    {
-        name: 'Lehenga Ghagra Tailoring',
-        price: '2,499',
-        icon: 'fas fa-crown',
-        featured: false,
-        features: ['Heavy panel stitching (Kalis)', 'Can-can mesh layer addition', 'Handmade custom Latkans (Hangings)', 'Dupatta border & tassels work', 'Heavy designer waistband fit']
-    }
-];
-
-const DEFAULT_TESTIMONIALS = [
-    { name: 'Kiran Dwivedi', rating: 5, service: 'Bridal Lehenga Stitching', comment: 'Absolutely stunned by the bridal lehenga stitching! They added double-layer can-can and custom matching latkans that matched my dress. The fit in Golghar for pickup was super convenient.', date: '2026-05-18' },
-    { name: 'Shweta Mishra', rating: 5, service: 'Designer Padded Blouse', comment: 'Excellent fitting! Stitched a princess-cut velvet blouse with beautiful piping and dori details. I provided my own cloth and they tailored it exactly like the Pinterest picture I showed. Highly recommended!', date: '2026-06-01' },
-    { name: 'Ankita Singh', rating: 4, service: 'Anarkali Salwar Suit', comment: 'Good tailoring work. The styling of the border lace on the sleeves was done with attention to detail. Free pickup and delivery in Shahpur made it completely hassle-free.', date: '2026-06-05' }
-];
-
-const FAQS = [
-    { question: 'How does Your Boutique Name tailoring work?', answer: 'It is simple! 1. You book a measurement pickup online or call us. 2. Our tailors/riders visit your house in Gorakhpur to collect your fabric and a reference fitting dress. 3. We stitch your garment according to your design instructions at our boutique. 4. We deliver the stitched dress back to your doorstep within 5-7 days. Payment is made on delivery.' },
-    { question: 'Do you provide fabric / cloth materials?', answer: 'No, we do not sell cloth. We are a pure custom stitching tailoring service. You need to purchase and provide the fabric/material. If your garment requires matching lining (aster) or piping, we can provide standard quality ones at nominal extra charges, or you can supply them.' },
-    { question: 'Is the pickup and delivery free in Gorakhpur?', answer: 'Yes! We offer <strong>Free Pickup & Delivery</strong> on your first order. For subsequent orders, delivery is free for orders above ₹700, otherwise a nominal delivery charge of ₹40 applies inside Gorakhpur City limits.' },
-    { question: 'What is the standard turnaround time for delivery?', answer: 'Our standard delivery time is <strong>5 to 7 days</strong> from the day we pickup your fabric. We also offer Express Delivery (within 48 hours) at an additional 50% express fee, subject to slot availability.' },
-    { question: 'What if the stitched dress does not fit perfectly?', answer: 'We strive for a first-time perfect fit by taking meticulous measurements. However, if there are any fitting issues, we provide <strong>Free Alteration services</strong>. Simply request an alteration pickup through our Help Desk within 3 days of delivery and we will fix it.' },
-    { question: 'Where is your shop located in Gorakhpur?', answer: 'Our central boutique workshop is located at 123, Park Road, Civil Lines, Gorakhpur. However, you do not need to travel, as our home pickup and delivery service covers all major locations including Golghar, Shahpur, Taramandal, Basharatpur, Medical Road, and Betiahata.' }
-];
 
 // App State Manager
 const AppState = {
     currentRoute: 'home',
     testimonials: [],
+    supportRequests: [],
+    contactRequests: [],
+    pendingReviews: [],
     bookings: [],
     reviewRating: 5,
     currentUser: null,
 
     init: function() {
-        // Load Reviews
+        // Load Approved Reviews
         if (!localStorage.getItem('boutique_reviews')) {
             localStorage.setItem('boutique_reviews', JSON.stringify(DEFAULT_TESTIMONIALS));
         }
         this.testimonials = JSON.parse(localStorage.getItem('boutique_reviews'));
+
+        // Load Pending Review Submissions
+        if (!localStorage.getItem('boutique_pending_reviews')) {
+            localStorage.setItem('boutique_pending_reviews', JSON.stringify([]));
+        }
+        this.pendingReviews = JSON.parse(localStorage.getItem('boutique_pending_reviews'));
+
+        // Load Support Requests
+        if (!localStorage.getItem('boutique_support_requests')) {
+            localStorage.setItem('boutique_support_requests', JSON.stringify([]));
+        }
+        this.supportRequests = JSON.parse(localStorage.getItem('boutique_support_requests'));
+
+        // Load Contact Requests
+        if (!localStorage.getItem('boutique_contact_requests')) {
+            localStorage.setItem('boutique_contact_requests', JSON.stringify([]));
+        }
+        this.contactRequests = JSON.parse(localStorage.getItem('boutique_contact_requests'));
 
         // Load Bookings
         this.bookings = JSON.parse(localStorage.getItem('boutique_bookings') || '[]');
@@ -162,15 +97,30 @@ const AppState = {
         window.scrollTo(0, 0);
 
         // Close Mobile Menu on Route Change
-        const navMenu = document.getElementById('nav-menu-list');
-        const hamburger = document.getElementById('hamburger-btn');
+        const navMenu = document.getElementById('site-menu');
+        const navToggle = document.querySelector('.nav-toggle');
+        const hamburger = document.querySelector('.hamburger');
         if (navMenu && navMenu.classList.contains('open')) {
             navMenu.classList.remove('open');
+        }
+        if (navToggle && navToggle.classList.contains('open')) {
+            navToggle.classList.remove('open');
+            navToggle.setAttribute('aria-expanded', 'false');
+        }
+        if (hamburger && hamburger.classList.contains('open')) {
             hamburger.classList.remove('open');
         }
     },
 
     renderLayout: function() {
+        // 0. Ensure toast container exists
+        if (!document.getElementById('toast-container')) {
+            const toastContainer = document.createElement('div');
+            toastContainer.id = 'toast-container';
+            toastContainer.className = 'toast-container';
+            document.body.appendChild(toastContainer);
+        }
+
         // 1. Render Header
         const headerHook = document.getElementById('header-hook');
         if (headerHook) {
@@ -185,29 +135,60 @@ const AppState = {
             this.executePageScripts(this.currentRoute);
         }
 
-        // 3. Render Footer
+        // 3. Update page metadata for SEO and sharing
+        this.updatePageMeta(this.currentRoute);
+
+        // 4. Render Footer
         const footerHook = document.getElementById('footer-hook');
         if (footerHook) {
             footerHook.innerHTML = window.Components.Footer();
         }
 
-        // 4. Render WhatsApp button
+        // 5. Render WhatsApp button
         const whatsappHook = document.getElementById('whatsapp-hook');
         if (whatsappHook) {
             whatsappHook.innerHTML = window.Components.WhatsAppButton();
         }
     },
 
-    setupHeaderListeners: function() {
-        const hamburger = document.getElementById('hamburger-btn');
-        const navMenu = document.getElementById('nav-menu-list');
-        
-        if (hamburger && navMenu) {
-            hamburger.addEventListener('click', () => {
-                hamburger.classList.toggle('open');
-                navMenu.classList.toggle('open');
-            });
+    updatePageMeta: function(route) {
+        const meta = PAGE_METADATA[route] || PAGE_METADATA.default;
+        if (typeof document !== 'undefined') {
+            document.title = meta.title;
+            let description = document.querySelector('meta[name="description"]');
+            if (!description) {
+                description = document.createElement('meta');
+                description.name = 'description';
+                document.head.appendChild(description);
+            }
+            description.content = meta.description;
+
+            const ogTitle = document.querySelector('meta[property="og:title"]');
+            if (ogTitle) ogTitle.content = meta.ogTitle || meta.title;
+            const ogDesc = document.querySelector('meta[property="og:description"]');
+            if (ogDesc) ogDesc.content = meta.ogDescription || meta.description;
+            const ogUrl = document.querySelector('meta[property="og:url"]');
+            if (ogUrl) ogUrl.content = window.location.href;
+
+            const canonical = document.querySelector('link[rel="canonical"]');
+            if (canonical) canonical.href = window.location.origin + window.location.pathname;
         }
+    },
+
+    setupHeaderListeners: function() {
+        const navToggle = document.querySelector('.nav-toggle');
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.getElementById('site-menu');
+
+        [navToggle, hamburger].forEach(button => {
+            if (!button || !navMenu) return;
+            button.addEventListener('click', () => {
+                const nextOpen = !navMenu.classList.contains('open');
+                navMenu.classList.toggle('open');
+                button.classList.toggle('open', nextOpen);
+                button.setAttribute('aria-expanded', String(nextOpen));
+            });
+        });
     },
 
     getPageContent: function(route) {
@@ -224,12 +205,20 @@ const AppState = {
                 return this.renderBookHtml();
             case 'reviews':
                 return this.renderReviewsHtml();
+            case 'support':
+                return this.renderSupportHtml();
+            case 'share-review':
+                return this.renderReviewSubmissionHtml();
             case 'help':
                 return this.renderHelpHtml();
             case 'contact':
                 return this.renderContactHtml();
+            case 'admin':
+                return this.renderAdminHtml();
             case 'login':
                 return this.renderLoginHtml();
+            case 'signup':
+                return this.renderSignupHtml();
             case 'profile':
                 return this.renderProfileHtml();
             default:
@@ -241,7 +230,7 @@ const AppState = {
         if (route === 'designs') {
             this.setupDesignsFilter();
         } else if (route === 'book') {
-            // Pre-fill date picker with tomorrow's date
+            // Pre-fill date picker with tomorrow's date and wire up booking form
             const dateInput = document.getElementById('book-pickup-date');
             if (dateInput) {
                 const tomorrow = new Date();
@@ -249,6 +238,250 @@ const AppState = {
                 dateInput.value = tomorrow.toISOString().split('T')[0];
                 dateInput.min = tomorrow.toISOString().split('T')[0];
             }
+            this.setupBookForm();
+        } else if (route === 'share-review') {
+            window.setReviewRating(5);
+            const imageInput = document.getElementById('rev-image');
+            if (imageInput) {
+                imageInput.addEventListener('change', () => {
+                    const file = imageInput.files[0];
+                    if (file && file.size > 4 * 1024 * 1024) {
+                        window.showToast('Image file must be under 4MB.', 'error');
+                        imageInput.value = '';
+                    }
+                });
+            }
+        } else if (route === 'login' || route === 'signup') {
+            // Setup auth form handlers
+            this.setupAuthForms();
+        }
+    },
+
+    setupBookForm: function() {
+        const form = document.getElementById('booking-form');
+        if (!form) return;
+
+        const cityInput = document.getElementById('pickup-city');
+        const cityWarning = document.getElementById('city-warning');
+        const useLocBtn = document.getElementById('use-location-btn');
+        const addressInput = document.getElementById('pickup-address');
+        const latInput = document.getElementById('loc-lat');
+        const lonInput = document.getElementById('loc-lon');
+        const dateInput = document.getElementById('book-pickup-date');
+
+        // City rule: show message when not Gorakhpur
+        function checkCity() {
+            if (!cityInput) return;
+            const val = (cityInput.value || '').trim().toLowerCase();
+            if (val && val !== 'gorakhpur') {
+                cityWarning.style.display = 'block';
+            } else {
+                cityWarning.style.display = 'none';
+            }
+        }
+
+        if (cityInput) {
+            cityInput.addEventListener('input', checkCity);
+            checkCity();
+        }
+
+        // Use current location button
+        if (useLocBtn) {
+            useLocBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (!navigator.geolocation) {
+                    alert('Geolocation is not supported by your browser.');
+                    return;
+                }
+                useLocBtn.disabled = true;
+                useLocBtn.textContent = 'Detecting...';
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    const lat = pos.coords.latitude;
+                    const lon = pos.coords.longitude;
+                    if (latInput) latInput.value = lat;
+                    if (lonInput) lonInput.value = lon;
+
+                    // Fill approximate address and try to set city if within Gorakhpur bbox
+                    const approx = `Approximate location: ${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+                    if (addressInput && !addressInput.value) addressInput.value = approx;
+
+                    // Rough Gorakhpur bounding box check
+                    if (lat >= 26.6 && lat <= 26.9 && lon >= 83.1 && lon <= 83.6) {
+                        if (cityInput && !cityInput.value) cityInput.value = 'Gorakhpur';
+                    }
+
+                    useLocBtn.textContent = 'Use My Current Location';
+                    useLocBtn.disabled = false;
+                    checkCity();
+                }, (err) => {
+                    console.warn('Geolocation error', err);
+                    alert('Unable to detect location. Please enter address manually.');
+                    useLocBtn.textContent = 'Use My Current Location';
+                    useLocBtn.disabled = false;
+                }, { enableHighAccuracy: false, timeout: 10000 });
+            });
+        }
+
+        // File input size check
+        const fileInput = document.getElementById('design-reference');
+        if (fileInput) {
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files && fileInput.files[0]) {
+                    const f = fileInput.files[0];
+                    const maxMB = 4;
+                    if (f.size > maxMB * 1024 * 1024) {
+                        alert('Design image is too large. Please use images under ' + maxMB + ' MB.');
+                        fileInput.value = '';
+                    }
+                }
+            });
+        }
+
+        form.addEventListener('submit', (ev) => {
+            ev.preventDefault();
+            window.clearFormErrors(form);
+
+            const requiredFields = [
+                { id: 'full-name', label: 'Full name' },
+                { id: 'phone-primary', label: 'Primary phone number' },
+                { id: 'pickup-address', label: 'Pickup address' },
+                { id: 'pickup-city', label: 'Pickup city' },
+                { id: 'garment-category', label: 'Garment category' },
+                { id: 'service-type', label: 'Service type' },
+                { id: 'book-pickup-date', label: 'Pickup date' },
+                { id: 'book-pickup-time', label: 'Pickup time' }
+            ];
+            let valid = true;
+            requiredFields.forEach(field => {
+                const input = document.getElementById(field.id);
+                if (!input || !input.value.trim()) {
+                    valid = false;
+                    if (input) window.setFieldError(input, `${field.label} is required.`);
+                }
+            });
+
+            const phoneValue = document.getElementById('phone-primary')?.value || '';
+            if (phoneValue && !window.validatePhoneNumber(phoneValue)) {
+                valid = false;
+                const phoneInput = document.getElementById('phone-primary');
+                if (phoneInput) window.setFieldError(phoneInput, 'Enter a valid 10-digit phone number.');
+            }
+
+            const emailValue = document.getElementById('email')?.value || '';
+            if (emailValue && !window.validateEmailAddress(emailValue)) {
+                valid = false;
+                const emailInput = document.getElementById('email');
+                if (emailInput) window.setFieldError(emailInput, 'Enter a valid email address.');
+            }
+
+            if (!valid) {
+                const status = document.getElementById('booking-form-status');
+                if (status) {
+                    status.style.display = 'block';
+                    status.textContent = 'Please fix the highlighted fields before submitting.';
+                }
+                return;
+            }
+
+            const data = new FormData(form);
+            const payload = {};
+            for (const [k,v] of data.entries()) payload[k] = v;
+
+            // Keep a local copy (simulation)
+            try { localStorage.setItem('lastBooking', JSON.stringify({payload, created: Date.now()})); } catch(e) {}
+
+            // Show success message
+            const wrapper = document.getElementById('booking-form-wrapper');
+            if (wrapper) {
+                wrapper.innerHTML = `<div class="booking-success"><h3>Thank you! Your booking request has been received.</h3><p>Our boutique help desk will contact you shortly for confirmation.</p></div>`;
+                document.querySelector('.booking-success').scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        // small UX: set min date to tomorrow if date input present
+        if (dateInput) {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            dateInput.min = tomorrow.toISOString().split('T')[0];
+        }
+    },
+
+    setupAuthForms: function() {
+        // Signup form
+        const signupForm = document.getElementById('signup-form');
+        if (signupForm) {
+            const cityWarning = document.getElementById('signup-city-warning');
+            const cityInput = document.getElementById('signup-city');
+            function checkCity() {
+                if (!cityInput) return;
+                const val = (cityInput.value || '').trim().toLowerCase();
+                cityWarning.style.display = (val && val !== 'gorakhpur') ? 'block' : 'none';
+            }
+            if (cityInput) cityInput.addEventListener('input', checkCity);
+
+            signupForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const data = new FormData(signupForm);
+                const user = {
+                    name: data.get('fullName') || '',
+                    phone: data.get('mobile') || '',
+                    phoneAlt: data.get('mobileAlt') || '',
+                    email: data.get('email') || '',
+                    address: data.get('address') || '',
+                    city: data.get('city') || '',
+                    password: data.get('password') || ''
+                };
+
+                const pass = data.get('password');
+                const pass2 = data.get('confirmPassword');
+                const errBox = document.getElementById('signup-error');
+                const successBox = document.getElementById('signup-success');
+                if (pass !== pass2) {
+                    if (errBox) { errBox.textContent = 'Passwords do not match.'; errBox.style.display = 'block'; }
+                    return;
+                }
+                if (!user.name || !user.phone) {
+                    if (errBox) { errBox.textContent = 'Please provide your name and mobile number.'; errBox.style.display = 'block'; }
+                    return;
+                }
+
+                // Save user locally (placeholder auth)
+                try { localStorage.setItem('boutique_user', JSON.stringify(user)); } catch(e) {}
+                if (errBox) errBox.style.display = 'none';
+                if (successBox) { successBox.style.display = 'block'; successBox.textContent = 'Account created. You are now logged in.'; }
+
+                // mark currentUser and redirect to profile after short delay
+                this.currentUser = user;
+                setTimeout(() => { window.location.hash = '#profile'; }, 1200);
+            });
+        }
+
+        // Login form
+        const loginForm = document.getElementById('login-form');
+        if (loginForm) {
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const data = new FormData(loginForm);
+                const id = (data.get('loginId') || '').trim();
+                const pw = (data.get('loginPassword') || '');
+                const errBox = document.getElementById('login-error');
+
+                const stored = localStorage.getItem('boutique_user');
+                if (!stored) {
+                    if (errBox) { errBox.textContent = 'No account found. Please sign up first.'; errBox.style.display = 'block'; }
+                    return;
+                }
+                const user = JSON.parse(stored);
+                // placeholder: accept login if id matches phone or email and password matches
+                if ((id === user.phone || id === user.email || id === user.name) && pw === user.password) {
+                    if (errBox) errBox.style.display = 'none';
+                    this.currentUser = user;
+                    localStorage.setItem('boutique_user', JSON.stringify(user));
+                    window.location.hash = '#profile';
+                } else {
+                    if (errBox) { errBox.textContent = 'Invalid credentials.'; errBox.style.display = 'block'; }
+                }
+            });
         }
     },
 
@@ -291,7 +524,7 @@ const AppState = {
                     <div class="hero-image-wrapper">
                         <div class="hero-img-bg"></div>
                         <div class="hero-img-card">
-                            <img src="https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=800&auto=format&fit=crop&q=80" alt="Boutique Tailoring Gorakhpur" width="460" height="500">
+                                <img loading="lazy" src="https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=800&auto=format&fit=crop&q=80" alt="Boutique tailoring sample in Gorakhpur" width="460" height="500" onerror="this.style.minHeight='300px';this.style.background='linear-gradient(135deg,#ffeef1,#f5eedf)';this.src='';this.alt='🪡 Premium Tailoring'">
                         </div>
                     </div>
                 </div>
@@ -332,7 +565,7 @@ const AppState = {
             <section class="about-section">
                 <div class="container about-grid">
                     <div class="about-img-box">
-                        <img class="about-img-main" src="https://images.unsplash.com/photo-1528570305086-13d300b900e6?w=600&auto=format&fit=crop&q=80" alt="About Our Tailoring Shop">
+                        <img loading="lazy" class="about-img-main" src="https://images.unsplash.com/photo-1528570305086-13d300b900e6?w=600&auto=format&fit=crop&q=80" alt="Tailoring workshop and materials" onerror="this.style.minHeight='300px';this.style.background='linear-gradient(135deg,#ffeef1,#f5eedf)';this.src='';this.alt='✂️'">
                         <div class="about-badge">15+ Years of Stitching Expertise</div>
                     </div>
                     <div class="about-content">
@@ -397,15 +630,62 @@ const AppState = {
     },
 
     renderServicesHtml: function() {
-        const servicesGridHTML = SERVICES.map(s => window.Components.ServiceCard(s)).join('');
-        return `
-            <section class="services-section">
-                <div class="container">
-                    <h2 class="section-title">Our Stitching Services</h2>
-                    <p class="section-subtitle">We stitch ladies clothing of all types. Select an outfit and get it custom made!</p>
-                    <div class="services-grid">
-                        ${servicesGridHTML}
+        // Full services page with detailed cards
+        const services = [
+            { id: 'blouse', title: 'Blouse Stitching', desc: 'Perfectly fitted blouse stitching for sarees, parties, weddings, and daily wear.', price: 350 },
+            { id: 'designer-blouse', title: 'Designer Blouse', desc: 'Stylish designer blouse stitching with modern neck, sleeve, back, lining, and fitting options.', price: 750 },
+            { id: 'petticoat', title: 'Petticoat Stitching', desc: 'Comfortable petticoat stitching with proper length, waist fitting, and fabric finishing.', price: 199 },
+            { id: 'lehenga', title: 'Lehenga Stitching', desc: 'Custom lehenga stitching for festive wear, wedding functions, bridal looks, and special occasions.', price: 2499 },
+            { id: 'suit', title: 'Suit Stitching', desc: 'Beautiful suit stitching for daily wear, office wear, festive wear, and party wear.', price: 650 },
+            { id: 'salwar-suit', title: 'Salwar Suit Stitching', desc: 'Traditional and modern salwar suit stitching with comfortable fitting and clean finishing.', price: 650 },
+            { id: 'kurti', title: 'Kurti Stitching', desc: 'Simple and designer kurti stitching for casual, office, and festive use.', price: 299 },
+            { id: 'bridal', title: 'Bridal Wear', desc: 'Premium bridal stitching with careful fitting, finishing, and elegant design details.', price: 4999 },
+            { id: 'wedding-clothes', title: 'Wedding Clothes', desc: 'Custom stitching for wedding outfits, family functions, reception, mehendi, haldi, and engagement.', price: 2999 },
+            { id: 'party', title: 'Party Wear', desc: 'Stylish party wear stitching for special events, celebrations, and festive occasions.', price: 1199 },
+            { id: 'alterations', title: 'Alterations', desc: 'Alteration service for blouse, suits, lehenga, kurti, fitting correction, length adjustment, and resizing.', price: 99 },
+            { id: 'custom-designer', title: 'Custom Designer Outfits', desc: 'Bring your design idea or reference image, and we will stitch a custom outfit for you.', price: 1999 }
+        ];
+
+        const quotes = [
+            'Your fabric, our craftsmanship.',
+            'Every stitch tells your story.',
+            'Designed for comfort, stitched for elegance.',
+            'Premium stitching for every occasion.',
+            'Made to fit you beautifully.'
+        ];
+
+        const cardsHTML = services.map((s, i) => `
+            <article class="service-full-card">
+                <div class="service-img-placeholder">Image</div>
+                <div class="service-full-body">
+                    <h3>${s.title}</h3>
+                    <p class="card-text">${s.desc}</p>
+                    <div class="service-meta">
+                        <div class="starting-price">Starting from ₹${s.price}</div>
+                        <a class="btn btn-primary" href="#book" data-route>Book Now</a>
                     </div>
+                    <div class="service-quote">${quotes[i % quotes.length]}</div>
+                </div>
+            </article>
+        `).join('');
+
+        return `
+            <section class="services-page">
+                <div class="container">
+                    <h2 class="section-title">Women’s Boutique Tailoring Services in Gorakhpur</h2>
+                    <p class="section-subtitle">Premium stitching for blouse, petticoat, lehenga, suits, bridal wear, wedding clothes, party wear, alterations, and custom designs.</p>
+
+                    <div class="services-full-grid">
+                        ${cardsHTML}
+                    </div>
+
+                    <div class="price-note" style="margin-top: var(--space-lg); color: var(--clr-dark-muted);">Final price may vary depending on fabric, design, lining, embroidery, fitting, and urgency.</div>
+
+                    <section class="services-cta" style="margin-top: var(--space-xl); text-align:center;">
+                        <h2>Ready to stitch your perfect outfit?</h2>
+                        <p>Book your order online and get free pickup on your first order in Gorakhpur.</p>
+                        <a class="btn btn-gold" href="#book" data-route>Book Stitching Order</a>
+                    </section>
                 </div>
             </section>
         `;
@@ -416,19 +696,27 @@ const AppState = {
         return `
             <section class="designs-section">
                 <div class="container">
-                    <h2 class="section-title">Our Design Catalog</h2>
-                    <p class="section-subtitle">Browse through our tailoring catalog of beautiful neck patterns, sleeve fits, and designs</p>
-                    
+                    <h1 class="section-title">Boutique Design Gallery</h1>
+                    <p class="section-subtitle">Explore sample stitching designs for blouse, lehenga, suits, bridal wear, wedding functions, party wear, and custom outfits.</p>
+
                     <div class="gallery-filters">
-                        <button class="filter-btn active" data-filter="all">All Designs</button>
-                        <button class="filter-btn" data-filter="Blouse">Blouses</button>
-                        <button class="filter-btn" data-filter="Lehenga">Lehengas</button>
-                        <button class="filter-btn" data-filter="Suit">Salwar Suits</button>
-                        <button class="filter-btn" data-filter="Bridal">Bridal/Designer</button>
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="Blouse">Blouse</button>
+                        <button class="filter-btn" data-filter="Lehenga">Lehenga</button>
+                        <button class="filter-btn" data-filter="Suit">Suit</button>
+                        <button class="filter-btn" data-filter="Bridal">Bridal</button>
+                        <button class="filter-btn" data-filter="Party Wear">Party Wear</button>
+                        <button class="filter-btn" data-filter="Custom">Custom</button>
                     </div>
 
                     <div class="gallery-grid" id="design-gallery-grid">
                         ${designsGridHTML}
+                    </div>
+
+                    <div class="gallery-cta">
+                        <h2>Like one of these designs?</h2>
+                        <p>Book a similar design and our boutique help desk will contact you for cloth pickup and measurement.</p>
+                        <a class="btn btn-gold" href="#book" data-route>Book Similar Design</a>
                     </div>
                 </div>
             </section>
@@ -470,39 +758,33 @@ const AppState = {
         return `
             <section class="pricing-section">
                 <div class="container">
-                    <h2 class="section-title">Stitching Price List</h2>
-                    <p class="section-subtitle">Transparent pricing for premium boutique craftsmanship. No hidden fees.</p>
-                    
+                    <h1 class="section-title">Boutique Tailoring Price List</h1>
+                    <p class="section-subtitle">Transparent starting prices for women’s tailoring services in Gorakhpur.</p>
+
                     <div class="pricing-notice">
-                        <i class="fas fa-info-circle"></i>
-                        <strong>Note:</strong> Customers provide their own fabric/cloth materials. Listed prices are for basic stitching + standard interlining. Additional designer back neck cuts, pads, laces, borders, latkans, or custom cuts will incur extra nominal styling charges.
+                        <i class="fas fa-info-circle"></i> Final price may vary depending on fabric, design, lining, embroidery, fitting, urgency, and customization.
                     </div>
 
                     <div class="pricing-grid">
                         ${pricingGridHTML}
                     </div>
 
-                    <div style="margin-top: var(--space-xl); background-color: var(--clr-white); padding: var(--space-lg); border-radius: var(--radius-lg); box-shadow: var(--shadow-soft);">
-                        <h3 style="font-size: 1.6rem; text-align: center; margin-bottom: var(--space-md);">Stitching Custom Add-on Pricing Estimator</h3>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-md);">
-                            <div>
-                                <h4 style="color: var(--clr-pink-deep); margin-bottom: 8px;"><i class="fas fa-feather-alt"></i> Blouse Styling Add-ons</h4>
-                                <ul style="list-style: none; font-size: 0.9rem; display: flex; flex-direction: column; gap: 6px;">
-                                    <li style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 4px;"><span>Padded bust inserts</span> <span>₹100</span></li>
-                                    <li style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 4px;"><span>Designer neck pattern (Sweetheart/Collar)</span> <span>₹80</span></li>
-                                    <li style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 4px;"><span>Deep backless layout (with Dori)</span> <span>₹100</span></li>
-                                    <li style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 4px;"><span>Cotton/Satin Lining material (Aster)</span> <span>₹80-120</span></li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h4 style="color: var(--clr-pink-deep); margin-bottom: 8px;"><i class="fas fa-magic"></i> Kurti & Suits Add-ons</h4>
-                                <ul style="list-style: none; font-size: 0.9rem; display: flex; flex-direction: column; gap: 6px;">
-                                    <li style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 4px;"><span>Designer sleeves (Bell/Balloon/Organza)</span> <span>₹60</span></li>
-                                    <li style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 4px;"><span>Lining attachment (full lining)</span> <span>₹150</span></li>
-                                    <li style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 4px;"><span>Boutique lace & piping borders fit</span> <span>₹50-100</span></li>
-                                    <li style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 4px;"><span>Designer neck patch / fabric buttons</span> <span>₹70</span></li>
-                                </ul>
-                            </div>
+                    <div class="pricing-offer-card">
+                        <div>
+                            <h3>First Order Offer</h3>
+                            <p>Free pickup on your first stitching order in Gorakhpur City.</p>
+                        </div>
+                        <a href="#book" class="btn btn-gold" data-route>Book Now</a>
+                    </div>
+
+                    <div class="pricing-cta">
+                        <div class="pricing-cta-copy">
+                            <h2>Need exact pricing?</h2>
+                            <p>Book your order or contact our WhatsApp help desk. Final price will be confirmed after checking fabric, design, and stitching requirements.</p>
+                        </div>
+                        <div class="pricing-cta-actions">
+                            <a href="#book" class="btn btn-primary" data-route>Book Stitching Order</a>
+                            <a href="${APP_CONFIG.getWhatsAppUrl ? APP_CONFIG.getWhatsAppUrl(WHATSAPP_PRICE_MESSAGE) : `https://wa.me/919876543210?text=${encodeURIComponent(WHATSAPP_PRICE_MESSAGE)}` }" class="btn btn-secondary" target="_blank" rel="noopener">WhatsApp Help Desk</a>
                         </div>
                     </div>
                 </div>
@@ -511,57 +793,133 @@ const AppState = {
     },
 
     renderBookHtml: function() {
-        const bookingFormHTML = window.Components.BookingForm(SERVICES);
         return `
             <section class="booking-section">
                 <div class="container">
-                    <h2 class="section-title">Book Stitching Pickup</h2>
-                    <p class="section-subtitle">Let our tailors handle the styling. Fill in your details below to schedule a free doorstep pickup in Gorakhpur.</p>
-                    
+                    <h1 class="section-title">Book Your Stitching Order</h1>
+                    <p class="section-subtitle">Share your details and we will contact you for cloth pickup, measurements, and order confirmation.</p>
+
+                    <div class="service-notice">Currently available only in ${SERVICE_AREA}.</div>
+
                     <div class="booking-grid">
                         <div class="booking-info-box">
-                            <h3>Doorstep Measurement & Pickup Details</h3>
-                            <p>Here is what happens once you submit your booking inquiry:</p>
-                            
+                            <h3>How Booking Works</h3>
                             <ul class="booking-steps">
-                                <li class="booking-step-item">
-                                    <div class="step-num">1</div>
-                                    <div class="step-text">
-                                        <h4>Schedule Setup</h4>
-                                        <p>We confirm your requested pickup slot in Gorakhpur via phone or WhatsApp.</p>
-                                    </div>
-                                </li>
-                                <li class="booking-step-item">
-                                    <div class="step-num">2</div>
-                                    <div class="step-text">
-                                        <h4>Measurements & Fabric Collection</h4>
-                                        <p>Our rider collects your cloth fabric and a perfect-fit reference outfit. Alternatively, our female tailoring expert can visit for body measurements.</p>
-                                    </div>
-                                </li>
-                                <li class="booking-step-item">
-                                    <div class="step-num">3</div>
-                                    <div class="step-text">
-                                        <h4>Custom Stitching</h4>
-                                        <p>Your garment is tailored with double stitching and neat lining under expert supervision.</p>
-                                    </div>
-                                </li>
-                                <li class="booking-step-item">
-                                    <div class="step-num">4</div>
-                                    <div class="step-text">
-                                        <h4>Home Delivery & Try-on</h4>
-                                        <p>We deliver it back in 5-7 days. Pay after trying it on. If adjustments are needed, alterations are completely free!</p>
-                                    </div>
-                                </li>
+                                <li><strong>Free Pickup:</strong> We collect your fabric from home (Gorakhpur only).</li>
+                                <li><strong>Measurements:</strong> We use your sample garment or take fresh measurements.</li>
+                                <li><strong>Stitching & Delivery:</strong> Stitching in 5-7 days, doorstep delivery and pay on delivery.</li>
                             </ul>
-
                             <div style="margin-top: var(--space-md); padding: var(--space-sm); background-color: var(--clr-white); border-radius: var(--radius-md); border-left: 4px solid var(--clr-pink-deep);">
-                                <h4 style="font-size: 0.95rem; margin-bottom: 4px;"><i class="fas fa-truck-loading" style="color: var(--clr-pink-deep);"></i> Free Pickup Locations</h4>
-                                <p style="font-size: 0.8rem; color: var(--clr-dark-muted);"> Golghar, Civil Lines, Shahpur, Taramandal, Basharatpur, Betiahata, Medical College Road, Rapti Nagar, Rustampur, Kasia Road, and all areas in Gorakhpur City limits.</p>
+                                <h4 style="font-size: 0.95rem; margin-bottom: 4px;">Free Pickup Locations</h4>
+                                <p style="font-size: 0.85rem; color: var(--clr-dark-muted);">Golghar, Civil Lines, Shahpur, Taramandal, Basharatpur, Betiahata, Medical College Road, Rapti Nagar, Rustampur, Kasia Road, and nearby Gorakhpur localities.</p>
                             </div>
                         </div>
 
                         <div id="booking-form-wrapper">
-                            ${bookingFormHTML}
+                            <form id="booking-form" class="booking-form">
+                                <input type="hidden" id="loc-lat" name="loc-lat">
+                                <input type="hidden" id="loc-lon" name="loc-lon">
+                                <div id="booking-form-status" class="form-error" style="display:none; margin-bottom: var(--space-sm);"></div>
+
+                                <fieldset class="form-section">
+                                    <legend>Customer Details</legend>
+                                    <div class="form-row">
+                                        <label>Full name <input id="full-name" name="fullName" class="form-input" required oninput="window.clearFieldError(this)"></label>
+                                        <label>Email address <input id="email" name="email" type="email" class="form-input" oninput="window.clearFieldError(this)"></label>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Primary phone number <input id="phone-primary" name="phonePrimary" type="tel" pattern="[0-9]{10}" class="form-input" required oninput="window.clearFieldError(this)"></label>
+                                        <label>Alternate phone number <input id="phone-alt" name="phoneAlt" type="tel" pattern="[0-9]{10}" class="form-input" oninput="window.clearFieldError(this)"></label>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="form-section">
+                                    <legend>Pickup Address</legend>
+                                    <div class="form-row">
+                                        <label>Full pickup address <input id="pickup-address" name="pickupAddress" class="form-input" required oninput="window.clearFieldError(this)"></label>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Landmark <input id="pickup-landmark" name="pickupLandmark" class="form-input" oninput="window.clearFieldError(this)"></label>
+                                        <label>City <input id="pickup-city" name="pickupCity" class="form-input" required oninput="window.clearFieldError(this)"></label>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Pincode <input id="pickup-pincode" name="pickupPincode" class="form-input" inputmode="numeric" oninput="window.clearFieldError(this)"></label>
+                                        <div class="location-actions"><button id="use-location-btn" class="btn btn-secondary">Use My Current Location</button></div>
+                                    </div>
+                                    <div id="city-warning" class="city-warning" style="display:none;">Service is currently available only in Gorakhpur. We will expand soon.</div>
+                                </fieldset>
+
+                                <fieldset class="form-section">
+                                    <legend>Garment Details</legend>
+                                    <div class="form-row">
+                                        <label>Garment category
+                                            <select id="garment-category" name="garmentCategory" class="form-input" required onchange="window.clearFieldError(this)">
+                                                <option value="" disabled selected>Select garment category</option>
+                                                <option>Blouse</option>
+                                                <option>Designer Blouse</option>
+                                                <option>Petticoat</option>
+                                                <option>Lehenga</option>
+                                                <option>Suit</option>
+                                                <option>Salwar Suit</option>
+                                                <option>Kurti</option>
+                                                <option>Gown</option>
+                                                <option>Bridal Wear</option>
+                                                <option>Wedding Wear</option>
+                                                <option>Party Wear</option>
+                                                <option>Alteration</option>
+                                                <option>Other</option>
+                                            </select>
+                                        </label>
+                                        <label>Service type
+                                            <select id="service-type" name="serviceType" class="form-input" required onchange="window.clearFieldError(this)">
+                                                <option value="" disabled selected>Select service type</option>
+                                                <option>New stitching</option>
+                                                <option>Alteration</option>
+                                                <option>Custom design</option>
+                                                <option>Bridal fitting</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="form-section">
+                                    <legend>Pickup & Measurement</legend>
+                                    <div class="form-row">
+                                        <label>Fabric Pickup Option
+                                            <select id="fabric-pickup" name="fabricPickup" class="form-input">
+                                                <option>Pickup from my address</option>
+                                                <option>I will visit boutique</option>
+                                            </select>
+                                        </label>
+                                        <label>Preferred pickup date <input id="book-pickup-date" name="pickupDate" type="date" class="form-input" required></label>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Preferred pickup time <input id="book-pickup-time" name="pickupTime" type="time" class="form-input" required></label>
+                                        <label>Measurement option
+                                            <select id="measurement-option" name="measurementOption" class="form-input">
+                                                <option>Use my old sample garment</option>
+                                                <option>Take fresh measurement</option>
+                                                <option>I will provide measurement</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="form-section">
+                                    <legend>Design Reference & Notes</legend>
+                                    <div class="form-row">
+                                        <label>Upload design reference image <input id="design-reference" name="designReference" type="file" accept="image/*" class="form-input"></label>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Special instructions <textarea id="special-instructions" name="specialInstructions" class="form-input" rows="4" placeholder="e.g. preferred sleeve length, lining, padding, delivery notes"></textarea></label>
+                                    </div>
+                                </fieldset>
+
+                                <div style="display:flex; gap:12px; align-items:center; margin-top: var(--space-md);">
+                                    <button type="submit" class="btn btn-gold">Submit Booking Request</button>
+                                    <div style="color: var(--clr-dark-muted); font-size:0.95rem;">We will contact you to confirm pickup and measurements.</div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -571,51 +929,131 @@ const AppState = {
 
     renderReviewsHtml: function() {
         const reviewsListHTML = this.testimonials.map(t => window.Components.TestimonialCard(t)).join('');
-        const reviewFormHTML = window.Components.ReviewForm(SERVICES);
-
-        // Aggregate statistics
         const averageRating = (this.testimonials.reduce((sum, t) => sum + t.rating, 0) / this.testimonials.length).toFixed(1);
 
         return `
             <section class="reviews-section">
                 <div class="container">
-                    <h2 class="section-title">Customer Reviews</h2>
-                    <p class="section-subtitle">See why women in Gorakhpur love our designer fitting work</p>
-                    
-                    <div style="background-color: var(--clr-white); padding: var(--space-md); border-radius: var(--radius-md); box-shadow: var(--shadow-soft); display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap; gap: var(--space-sm); margin-bottom: var(--space-lg); border: 1px solid rgba(197, 145, 135, 0.08);">
-                        <div style="text-align: center;">
-                            <h3 style="font-size: 3rem; color: var(--clr-pink-deep); font-family: var(--font-heading); line-height: 1;">${averageRating}</h3>
-                            <div class="testimonial-stars" style="justify-content: center; font-size: 1.2rem; margin: 5px 0;">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                            </div>
-                            <p style="font-size: 0.85rem; color: var(--clr-dark-muted); font-weight: 500;">Based on ${this.testimonials.length} reviews</p>
+                    <h1 class="section-title">Customer Testimonials</h1>
+                    <p class="section-subtitle">Real-style sample reviews from women customers in Gorakhpur. These are placeholder testimonials for now and will be replaced later.</p>
+
+                    <div class="reviews-summary-card">
+                        <div>
+                            <p class="review-summary-label">Average Rating</p>
+                            <h2>${averageRating} / 5</h2>
                         </div>
-                        <div style="max-width: 400px; width: 100%; display: flex; flex-direction: column; gap: 6px;">
-                            <div style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem;">
-                                <span style="width: 50px;">5 Star</span>
-                                <div style="flex-grow: 1; height: 8px; background-color: var(--clr-cream-dark); border-radius: 4px; overflow: hidden;"><div style="width: 85%; height: 100%; background-color: #ffc107;"></div></div>
-                                <span style="width: 30px; text-align: right;">85%</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem;">
-                                <span style="width: 50px;">4 Star</span>
-                                <div style="flex-grow: 1; height: 8px; background-color: var(--clr-cream-dark); border-radius: 4px; overflow: hidden;"><div style="width: 15%; height: 100%; background-color: #ffc107;"></div></div>
-                                <span style="width: 30px; text-align: right;">15%</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: rgba(0,0,0,0.3);">
-                                <span style="width: 50px;">3 Star</span>
-                                <div style="flex-grow: 1; height: 8px; background-color: var(--clr-cream-dark); border-radius: 4px; overflow: hidden;"><div style="width: 0%; height: 100%; background-color: #ffc107;"></div></div>
-                                <span style="width: 30px; text-align: right;">0%</span>
-                            </div>
+                        <div class="review-summary-stars">
+                            <span>${Array.from({ length: 5 }, (_, i) => i < Math.round(averageRating) ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>').join('')}</span>
+                            <span class="review-summary-count">Based on ${this.testimonials.length} reviews</span>
                         </div>
                     </div>
 
-                    <div class="reviews-grid-layout">
-                        <div class="reviews-list-container" id="reviews-list-target">
-                            ${reviewsListHTML}
+                    <div class="reviews-grid-layout" id="reviews-list-target">
+                        ${reviewsListHTML}
+                    </div>
+
+                    <div class="reviews-cta">
+                        <div>
+                            <h2>Have a review to share?</h2>
+                            <p>Share your boutique tailoring experience and help others choose the perfect fit.</p>
                         </div>
-                        
-                        <div id="reviews-form-wrapper">
-                            ${reviewFormHTML}
+                        <a href="#share-review" class="btn btn-gold" data-route>Share Your Review</a>
+                    </div>
+                </div>
+            </section>
+        `;
+    },
+
+    renderReviewSubmissionHtml: function() {
+        const serviceOptions = [
+            'Blouse Stitching',
+            'Designer Blouse',
+            'Petticoat Stitching',
+            'Lehenga Stitching',
+            'Suit Stitching',
+            'Salwar Suit',
+            'Kurti Stitching',
+            'Bridal Wear',
+            'Wedding Wear',
+            'Party Wear',
+            'Alteration',
+            'Custom Designer Outfit',
+            'Other'
+        ];
+
+        return `
+            <section class="review-submit-section">
+                <div class="container">
+                    <div class="review-submit-header">
+                        <h1 class="section-title">Share Your Review</h1>
+                        <p class="section-subtitle">Tell us about your boutique tailoring experience. Your review will be shown publicly only after approval.</p>
+                    </div>
+
+                    <div class="review-submit-grid">
+                        <div class="review-submit-copy">
+                            <div class="review-info-box">
+                                <h3>Why approval is required?</h3>
+                                <p>To keep our review page genuine and helpful, every review is checked before it is published.</p>
+                            </div>
+                            <div class="review-submit-highlights">
+                                <div class="highlight-card">
+                                    <h4>Safe and trusted</h4>
+                                    <p>Each review is verified for authenticity before it appears on the website.</p>
+                                </div>
+                                <div class="highlight-card">
+                                    <h4>Easy on mobile</h4>
+                                    <p>The form is designed for quick submission from your phone or tablet.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="review-form-wrapper">
+                            ${window.Components.ReviewForm(serviceOptions)}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        `;
+    },
+
+    renderSupportHtml: function() {
+        return `
+            <section class="support-section">
+                <div class="container">
+                    <div class="support-header">
+                        <h1 class="section-title">Customer Support</h1>
+                        <p class="section-subtitle">Submit your issue and our boutique support team will contact you shortly.</p>
+                    </div>
+
+                    <div class="support-main-grid">
+                        <div class="support-form-card-wrapper">
+                            ${window.Components.SupportForm()}
+                        </div>
+
+                        <div class="support-info-panel">
+                            <div class="support-info-card">
+                                <h3>WhatsApp Help Desk</h3>
+                                <a href="${APP_CONFIG.getWhatsAppUrl ? APP_CONFIG.getWhatsAppUrl(WHATSAPP_SUPPORT_MESSAGE) : `https://wa.me/919876543210?text=${encodeURIComponent(WHATSAPP_SUPPORT_MESSAGE)}` }" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-block">Chat on WhatsApp</a>
+                            </div>
+                            <div class="support-info-card">
+                                <h3>Call Support</h3>
+                                <a href="${PHONE_HREF}" class="btn btn-secondary btn-block">Call ${PHONE_DISPLAY}</a>
+                            </div>
+                            <div class="support-info-card">
+                                <h3>Email Support</h3>
+                                <a href="${APP_CONFIG.getEmailHref ? APP_CONFIG.getEmailHref() : `mailto:${EMAIL}`}" class="support-link">${EMAIL}</a>
+                            </div>
+                            <div class="support-info-card">
+                                <h3>Service Area</h3>
+                                <p>${SERVICE_AREA}</p>
+                            </div>
+                            <div class="support-info-card">
+                                <h3>Support Hours</h3>
+                                <p>10:00 AM – 7:00 PM</p>
+                            </div>
+                            <div class="support-urgent-note">
+                                <p><strong>For urgent issues, please contact us directly on WhatsApp.</strong></p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -639,8 +1077,8 @@ const AppState = {
                             <div class="help-contact-card">
                                 <h4>Need Direct Assistance?</h4>
                                 <p style="font-size: 0.9rem; color: var(--clr-dark-muted); margin-bottom: var(--space-sm);">Our customer care desk is open Mon-Sat from 10:00 AM to 8:00 PM.</p>
-                                <a href="tel:+919876543210" class="btn btn-secondary" style="width: 100%; margin-bottom: 8px;"><i class="fas fa-phone-alt"></i> Call +91 98765 43210</a>
-                                <a href="https://wa.me/919876543210" class="btn btn-primary" style="width: 100%; background-color: var(--clr-whatsapp);"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
+                                <a href="${PHONE_HREF}" class="btn btn-secondary" style="width: 100%; margin-bottom: 8px;"><i class="fas fa-phone-alt"></i> Call ${PHONE_DISPLAY}</a>
+                                <a href="${APP_CONFIG.getWhatsAppUrl ? APP_CONFIG.getWhatsAppUrl() : WHATSAPP_URL}" class="btn btn-primary" style="width: 100%; background-color: var(--clr-whatsapp);"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
                             </div>
                         </div>
 
@@ -659,75 +1097,149 @@ const AppState = {
         return `
             <section class="contact-section">
                 <div class="container">
-                    <h2 class="section-title">Contact Us</h2>
-                    <p class="section-subtitle">Reach out for custom bridal stitching appointments or boutique workshop inquiries in Gorakhpur.</p>
-                    
+                    <div class="section-intro text-center">
+                        <h1 class="section-title">Contact Our Boutique</h1>
+                        <p class="section-subtitle">Reach us for stitching orders, pickup details, pricing, measurements, fitting support, and custom design help.</p>
+                    </div>
+
                     <div class="contact-grid">
                         <div class="contact-details-box">
                             <div class="contact-info-card">
-                                <div class="contact-info-icon"><i class="fas fa-map-marker-alt"></i></div>
+                                <div class="contact-info-icon"><i class="fas fa-store"></i></div>
                                 <div class="contact-info-text">
-                                    <h4>Workshop Address</h4>
-                                    <p>123, Park Road, Near Town Hall, Civil Lines, Gorakhpur, Uttar Pradesh - 273001</p>
+                                    <h4>Boutique Name</h4>
+                                    <p>${BUSINESS_NAME}</p>
                                 </div>
                             </div>
-
                             <div class="contact-info-card">
                                 <div class="contact-info-icon"><i class="fas fa-phone-alt"></i></div>
                                 <div class="contact-info-text">
-                                    <h4>Call / WhatsApp</h4>
-                                    <p><a href="tel:+919876543210">+91 98765 43210</a> / <a href="https://wa.me/919876543210">+91 98765 43210</a></p>
+                                    <h4>Phone</h4>
+                                    <p><a href="${PHONE_HREF}">${PHONE_DISPLAY}</a></p>
                                 </div>
                             </div>
-
+                            <div class="contact-info-card">
+                                <div class="contact-info-icon"><i class="fab fa-whatsapp"></i></div>
+                                <div class="contact-info-text">
+                                    <h4>WhatsApp</h4>
+                                    <p><a href="${APP_CONFIG.getWhatsAppUrl ? APP_CONFIG.getWhatsAppUrl(WHATSAPP_CONTACT_MESSAGE) : `https://wa.me/919876543210?text=${encodeURIComponent(WHATSAPP_CONTACT_MESSAGE)}` }" target="_blank" rel="noopener noreferrer">${PHONE_DISPLAY}</a></p>
+                                </div>
+                            </div>
                             <div class="contact-info-card">
                                 <div class="contact-info-icon"><i class="fas fa-envelope"></i></div>
                                 <div class="contact-info-text">
-                                    <h4>Email Support</h4>
-                                    <p><a href="mailto:info@yourboutiquename.com">info@yourboutiquename.com</a></p>
+                                    <h4>Email</h4>
+                                    <p><a href="${APP_CONFIG.getEmailHref ? APP_CONFIG.getEmailHref() : `mailto:${EMAIL}`}">${EMAIL}</a></p>
+                                </div>
+                            </div>
+                            <div class="contact-info-card">
+                                <div class="contact-info-icon"><i class="fas fa-map-marker-alt"></i></div>
+                                <div class="contact-info-text">
+                                    <h4>Address</h4>
+                                    <p>${ADDRESS}</p>
+                                </div>
+                            </div>
+                            <div class="contact-info-card">
+                                <div class="contact-info-icon"><i class="fas fa-broadcast-tower"></i></div>
+                                <div class="contact-info-text">
+                                    <h4>Service Area</h4>
+                                    <p>${SERVICE_AREA}</p>
+                                </div>
+                            </div>
+                            <div class="contact-info-card">
+                                <div class="contact-info-icon"><i class="fas fa-clock"></i></div>
+                                <div class="contact-info-text">
+                                    <h4>Opening Hours</h4>
+                                    <p>10:00 AM – 7:00 PM</p>
                                 </div>
                             </div>
 
-                            <div class="contact-map-placeholder">
-                                <img src="https://images.unsplash.com/photo-1618220179428-22790b461013?w=600&auto=format&fit=crop&q=80" alt="Gorakhpur map location">
-                                <div class="map-overlay-badge">
-                                    <strong>Central Gorakhpur Workshop</strong><br>
-                                    Civil Lines, Near Park Road<br>
-                                    <span style="font-size:0.75rem; color:var(--clr-dark-muted);">We offer home pickups across all of Gorakhpur City</span>
-                                </div>
+                            <div class="contact-button-group">
+                                <a class="btn btn-primary btn-block" href="${APP_CONFIG.getWhatsAppUrl ? APP_CONFIG.getWhatsAppUrl(WHATSAPP_CONTACT_MESSAGE) : `https://wa.me/919876543210?text=${encodeURIComponent(WHATSAPP_CONTACT_MESSAGE)}` }" target="_blank" rel="noopener noreferrer">
+                                    <i class="fab fa-whatsapp"></i> WhatsApp Help Desk
+                                </a>
+                                <a class="btn btn-secondary btn-block" href="${PHONE_HREF}">
+                                    <i class="fas fa-phone-alt"></i> Call Now
+                                </a>
+                                <a class="btn btn-gold btn-block" href="#book">
+                                    <i class="fas fa-calendar-check"></i> Book Stitching Order
+                                </a>
+                            </div>
+
+                            <div class="contact-alert-card">
+                                <p><strong>Currently serving only Gorakhpur City.</strong></p>
+                                <p>Service outside Gorakhpur is not available yet. We will expand soon.</p>
                             </div>
                         </div>
 
-                        <div class="booking-form-card">
-                            <h3 style="margin-bottom: var(--space-sm);">Send Us a Message</h3>
+                        <div class="booking-form-card contact-form-card">
+                            <h3>Send a Message</h3>
+                            <p class="contact-form-note">Our boutique team will respond to your inquiry soon.</p>
                             <form id="contact-message-form" onsubmit="window.handleContactSubmit(event)">
+                                <div id="contact-form-status" class="form-error" style="display:none; margin-bottom: var(--space-sm);"></div>
                                 <div class="form-group">
-                                    <label class="form-label" for="con-name">Your Full Name *</label>
-                                    <input class="form-input" type="text" id="con-name" required placeholder="Name">
+                                    <label class="form-label" for="con-name">Full name *</label>
+                                    <input class="form-input" type="text" id="con-name" required placeholder="Your name" oninput="window.clearFieldError(this)">
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="con-phone">Phone Number *</label>
-                                    <input class="form-input" type="tel" id="con-phone" required placeholder="Phone Number">
+                                    <label class="form-label" for="con-phone">Phone number *</label>
+                                    <input class="form-input" type="tel" id="con-phone" required placeholder="${PHONE_DISPLAY}" oninput="window.clearFieldError(this)">
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="con-subject">Subject *</label>
-                                    <select class="form-select" id="con-subject" required>
-                                        <option value="" disabled selected>-- Select Subject --</option>
-                                        <option value="Bridal Tailoring Inquiry">Bridal Tailoring Appointment</option>
-                                        <option value="Bulk Stitching Order">Bulk Uniform/Group Stitching</option>
-                                        <option value="Alteration Request">Alteration Pickup</option>
-                                        <option value="General Question">General Customization Query</option>
+                                    <label class="form-label" for="con-email">Email address</label>
+                                    <input class="form-input" type="email" id="con-email" placeholder="${EMAIL}" oninput="window.clearFieldError(this)">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="con-inquiry">Inquiry type *</label>
+                                    <select class="form-select" id="con-inquiry" required onchange="window.clearFieldError(this)">
+                                        <option value="" disabled selected>Choose inquiry type</option>
+                                        <option value="New stitching order">New stitching order</option>
+                                        <option value="Pricing inquiry">Pricing inquiry</option>
+                                        <option value="Pickup inquiry">Pickup inquiry</option>
+                                        <option value="Measurement inquiry">Measurement inquiry</option>
+                                        <option value="Design inquiry">Design inquiry</option>
+                                        <option value="Fitting issue">Fitting issue</option>
+                                        <option value="Other">Other</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="con-msg">Message / Query Details *</label>
-                                    <textarea class="form-textarea" id="con-msg" required placeholder="Type your design requirements or questions here..."></textarea>
+                                    <label class="form-label" for="con-message">Message *</label>
+                                    <textarea class="form-textarea" id="con-message" rows="5" required placeholder="Tell us more about your request"></textarea>
                                 </div>
                                 <button class="btn btn-primary booking-submit-btn" type="submit">
-                                    <i class="fas fa-paper-plane"></i> Send Message
+                                    <i class="fas fa-paper-plane"></i> Submit Inquiry
                                 </button>
                             </form>
+                            <div id="contact-success-message" class="contact-success-card" style="display:none; margin-top: var(--space-lg);">
+                                <div class="contact-success-icon"><i class="fas fa-check-circle"></i></div>
+                                <h3>Thank you for contacting us.</h3>
+                                <p>Our boutique team will get back to you shortly.</p>
+                            </div>
                         </div>
+                    </div>
+
+                    <div class="contact-map-placeholder contact-map-text-placeholder">
+                        <div class="map-placeholder-text">
+                            <h4>Google Map location will be added here.</h4>
+                            <p>Find our boutique in Gorakhpur City soon.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        `;
+    },
+
+    renderAdminHtml: function() {
+        return `
+            <section class="admin-section">
+                <div class="container">
+                    <div class="section-intro text-center">
+                        <h1 class="section-title">Admin Placeholder</h1>
+                        <p class="section-subtitle">This is a placeholder for boutique admin access. Use login or return to the main site.</p>
+                    </div>
+                    <div class="admin-actions" style="display:grid; gap:var(--space-sm); max-width:320px; margin:0 auto;">
+                        <a href="#login" class="btn btn-primary">Login</a>
+                        <a href="#home" class="btn btn-secondary">Back to Home</a>
                     </div>
                 </div>
             </section>
@@ -736,51 +1248,74 @@ const AppState = {
 
     renderLoginHtml: function() {
         return `
-            <section class="auth-page">
-                <div class="auth-card">
-                    <div class="auth-tabs">
-                        <button class="auth-tab-btn active" id="auth-login-tab" onclick="window.toggleAuthTab('login')">Login</button>
-                        <button class="auth-tab-btn" id="auth-signup-tab" onclick="window.toggleAuthTab('signup')">Sign Up</button>
-                    </div>
+            <section class="auth-page container">
+                <div class="auth-card auth-card--center">
+                    <h1 class="section-title">Login to Your Account</h1>
+                    <p class="section-subtitle">Access your boutique bookings and support details.</p>
 
-                    <!-- Login Form -->
-                    <div id="auth-login-form-wrapper">
-                        <form class="auth-form" onsubmit="window.handleLoginSubmit(event)">
-                            <div class="form-group">
-                                <label class="form-label" for="login-email">Email Address *</label>
-                                <input class="form-input" type="email" id="login-email" required placeholder="e.g. customer@example.com" value="priya@example.com">
+                    <div class="auth-body">
+                        <div id="login-error" class="form-error" style="display:none;"></div>
+                        <form id="login-form" class="auth-form">
+                            <label class="form-label">Mobile number or email
+                                <input name="loginId" class="form-input" placeholder="Mobile or email" required oninput="window.clearFieldError(this)">
+                            </label>
+                            <label class="form-label">Password
+                                <input type="password" name="loginPassword" class="form-input" placeholder="Password" required oninput="window.clearFieldError(this)">
+                            </label>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin:8px 0;">
+                                <a href="#help" style="color: var(--clr-pink-deep); font-size:0.95rem;">Forgot password?</a>
+                                <a href="#signup" style="color: var(--clr-pink-deep); font-size:0.95rem;">New customer? Create an account</a>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label" for="login-pass">Password *</label>
-                                <input class="form-input" type="password" id="login-pass" required placeholder="••••••••" value="password123">
-                            </div>
-                            <div style="font-size: 0.8rem; text-align: right; margin-bottom: var(--space-xs);">
-                                <a href="#help" style="color: var(--clr-pink-deep);">Forgot Password?</a>
-                            </div>
-                            <button class="btn btn-primary" type="submit" style="width: 100%;">Login to Account</button>
+                            <button class="btn btn-primary" type="submit" style="width:100%;">Login</button>
                         </form>
                     </div>
+                </div>
+            </section>
+        `;
+    },
 
-                    <!-- Signup Form (hidden initially) -->
-                    <div id="auth-signup-form-wrapper" style="display: none;">
-                        <form class="auth-form" onsubmit="window.handleSignupSubmit(event)">
-                            <div class="form-group">
-                                <label class="form-label" for="sign-name">Full Name *</label>
-                                <input class="form-input" type="text" id="sign-name" required placeholder="Your Name">
+    renderSignupHtml: function() {
+        return `
+            <section class="auth-page container">
+                <div class="auth-card auth-card--center">
+                    <h1 class="section-title">Create Your Boutique Account</h1>
+                    <p class="section-subtitle">Sign up to book stitching orders, save your contact details, and get faster support.</p>
+
+                    <div class="auth-body">
+                        <div id="signup-error" class="form-error" style="display:none;"></div>
+                        <div id="signup-success" class="form-success" style="display:none;"></div>
+
+                        <form id="signup-form" class="auth-form">
+                            <label class="form-label">Full name
+                                <input name="fullName" class="form-input" placeholder="Your full name" required oninput="window.clearFieldError(this)">
+                            </label>
+                            <label class="form-label">Mobile number
+                                <input name="mobile" class="form-input" placeholder="Primary mobile number" required oninput="window.clearFieldError(this)">
+                            </label>
+                            <label class="form-label">Alternate mobile (optional)
+                                <input name="mobileAlt" class="form-input" placeholder="Alternate mobile" oninput="window.clearFieldError(this)">
+                            </label>
+                            <label class="form-label">Email address
+                                <input name="email" type="email" class="form-input" placeholder="Email address" oninput="window.clearFieldError(this)">
+                            </label>
+                            <label class="form-label">Full address
+                                <input name="address" class="form-input" placeholder="House / street / locality" oninput="window.clearFieldError(this)">
+                            </label>
+                            <label class="form-label">City
+                                <input id="signup-city" name="city" class="form-input" placeholder="City" required oninput="window.clearFieldError(this)">
+                            </label>
+                            <div id="signup-city-warning" class="city-warning" style="display:none;">Service is currently available only in Gorakhpur. We will expand soon.</div>
+                            <label class="form-label">Password
+                                <input id="signup-password" name="password" type="password" class="form-input" placeholder="Create password" required oninput="window.clearFieldError(this)">
+                            </label>
+                            <label class="form-label">Confirm password
+                                <input id="signup-confirm-password" name="confirmPassword" type="password" class="form-input" placeholder="Confirm password" required oninput="window.clearFieldError(this)">
+                            </label>
+
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top: var(--space-sm);">
+                                <a href="#login" style="color: var(--clr-pink-deep);">Already have an account? Login</a>
+                                <button class="btn btn-gold" type="submit">Sign Up</button>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label" for="sign-email">Email Address *</label>
-                                <input class="form-input" type="email" id="sign-email" required placeholder="Your email">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="sign-phone">Phone Number *</label>
-                                <input class="form-input" type="tel" id="sign-phone" required placeholder="Phone number (10 digit)">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="sign-pass">Create Password *</label>
-                                <input class="form-input" type="password" id="sign-pass" required placeholder="Password">
-                            </div>
-                            <button class="btn btn-gold" type="submit" style="width: 100%; margin-top: var(--space-xs);">Create Account</button>
                         </form>
                     </div>
                 </div>
@@ -809,7 +1344,7 @@ const AppState = {
                     <div class="p-book-info">
                         <h4>${b.service}</h4>
                         <p><i class="far fa-calendar-alt"></i> Pickup Scheduled: <strong>${b.pickupDate}</strong> (${b.pickupTime})</p>
-                        <p><i class="fas fa-map-marker-alt"></i> Address: ${b.address.substring(0, 45)}...</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Address: ${b.address.length > 45 ? b.address.substring(0, 45) + '...' : b.address}</p>
                     </div>
                     <div>
                         <span class="p-book-status pending"><i class="fas fa-spinner fa-spin"></i> Pending Collection</span>
@@ -864,23 +1399,33 @@ const AppState = {
 window.toggleFAQ = function(index) {
     const faqBody = document.getElementById(`faq-body-${index}`);
     const faqItem = document.getElementById(`faq-item-${index}`);
+    const faqButton = document.querySelector(`#faq-item-${index} .faq-header`);
     
-    if (faqBody && faqItem) {
+    if (faqBody && faqItem && faqButton) {
         const isOpen = faqItem.classList.contains('open');
         
         // Close all other FAQs for clean accordion effect
         document.querySelectorAll('.faq-item').forEach(item => {
             item.classList.remove('open');
             const body = item.querySelector('.faq-body');
-            if (body) body.style.maxHeight = '0';
+            const button = item.querySelector('.faq-header');
+            if (body) {
+                body.style.maxHeight = '0';
+                body.setAttribute('aria-hidden', 'true');
+            }
+            if (button) button.setAttribute('aria-expanded', 'false');
         });
 
         if (!isOpen) {
             faqItem.classList.add('open');
             faqBody.style.maxHeight = faqBody.scrollHeight + "px";
+            faqBody.setAttribute('aria-hidden', 'false');
+            faqButton.setAttribute('aria-expanded', 'true');
         } else {
             faqItem.classList.remove('open');
             faqBody.style.maxHeight = "0";
+            faqBody.setAttribute('aria-hidden', 'true');
+            faqButton.setAttribute('aria-expanded', 'false');
         }
     }
 };
@@ -933,7 +1478,7 @@ window.handleBookingSubmit = function(event) {
                 <h3 class="booking-success-title">Booking Request Confirmed!</h3>
                 <p style="font-size: 0.95rem; color: var(--clr-dark-muted);">We have scheduled your custom tailoring measurement pickup.</p>
                 <div class="booking-ref-box">Reference ID: ${bookingRef}</div>
-                <p style="font-size: 0.85rem; color: var(--clr-dark-muted); margin-bottom: var(--space-sm);">Our designer support team will call you within 2 hours at <strong>+91 ${phone}</strong> to verify the pickup address in Gorakhpur.</p>
+                <p style="font-size: 0.85rem; color: var(--clr-dark-muted); margin-bottom: var(--space-sm);">Our designer support team will call you within 2 hours at <strong>${PHONE_DISPLAY}</strong> to verify the pickup address in ${CITY}.</p>
                 <div style="display: flex; flex-direction: column; gap: 8px;">
                     <a href="#profile" class="btn btn-primary" style="width: 100%;">View My Bookings</a>
                     <button onclick="window.resetBookingForm()" class="btn btn-secondary" style="width: 100%;">Book Another Garment</button>
@@ -975,47 +1520,230 @@ window.setReviewRating = function(rating) {
 window.handleReviewSubmit = function(event) {
     event.preventDefault();
 
-    const name = document.getElementById('rev-name').value;
+    const name = document.getElementById('rev-name').value.trim();
+    const phone = document.getElementById('rev-phone').value.trim();
+    const email = document.getElementById('rev-email').value.trim();
     const service = document.getElementById('rev-service').value;
     const rating = AppState.reviewRating;
-    const comment = document.getElementById('rev-comment').value;
+    const comment = document.getElementById('rev-comment').value.trim();
+    const imageInput = document.getElementById('rev-image');
+    const imageFile = imageInput && imageInput.files && imageInput.files[0] ? imageInput.files[0] : null;
+    const statusField = document.getElementById('review-form-status');
+
+    if (!name || !phone || !service || !comment) {
+        if (statusField) {
+            statusField.style.display = 'block';
+            statusField.textContent = 'Please complete all required review fields before submitting.';
+        }
+        return;
+    }
+
+    if (imageFile && imageFile.size > 4 * 1024 * 1024) {
+        if (statusField) {
+            statusField.style.display = 'block';
+            statusField.textContent = 'Image must be smaller than 4MB. Please choose a smaller file or skip image upload.';
+        }
+        return;
+    }
 
     const newReview = {
         name,
+        phone,
+        email: email || null,
         service,
         rating,
         comment,
-        date: new Date().toISOString().split('T')[0]
+        imageName: imageFile ? imageFile.name : null,
+        status: 'pending',
+        submittedAt: new Date().toISOString()
     };
 
-    const allReviews = JSON.parse(localStorage.getItem('boutique_reviews'));
-    allReviews.unshift(newReview);
-    localStorage.setItem('boutique_reviews', JSON.stringify(allReviews));
+    const pendingList = JSON.parse(localStorage.getItem('boutique_pending_reviews') || '[]');
+    pendingList.unshift(newReview);
+    localStorage.setItem('boutique_pending_reviews', JSON.stringify(pendingList));
+    AppState.pendingReviews = pendingList;
 
-    AppState.testimonials = allReviews;
-
-    // Reset Review input form and append review to list
-    event.target.reset();
-    window.setReviewRating(5);
-
-    // Refresh reviews UI list
-    const reviewsListTarget = document.getElementById('reviews-list-target');
-    if (reviewsListTarget) {
-        reviewsListTarget.innerHTML = allReviews.map(t => window.Components.TestimonialCard(t)).join('');
+    const formWrapper = document.getElementById('review-form-wrapper');
+    if (formWrapper) {
+        formWrapper.innerHTML = `
+            <div class="review-success-card">
+                <div class="review-success-icon"><i class="fas fa-check-circle"></i></div>
+                <h3>Thank you for your review.</h3>
+                <p>It has been submitted for approval and will appear on our website after verification.</p>
+            </div>
+        `;
     }
 
-    // Success alert message popup style
-    alert('Thank you for sharing your experience! Your review is posted successfully.');
+    window.setReviewRating(5);
+    window.showToast('Thank you for your review. It will be published after approval.', 'success');
+};
+
+window.approvePendingReview = function(index) {
+    const pendingList = JSON.parse(localStorage.getItem('boutique_pending_reviews') || '[]');
+    if (!pendingList[index]) return null;
+
+    const reviewToApprove = pendingList.splice(index, 1)[0];
+    reviewToApprove.status = 'approved';
+    reviewToApprove.approvedAt = new Date().toISOString();
+
+    const approvedList = JSON.parse(localStorage.getItem('boutique_reviews') || '[]');
+    approvedList.unshift(reviewToApprove);
+    localStorage.setItem('boutique_reviews', JSON.stringify(approvedList));
+    localStorage.setItem('boutique_pending_reviews', JSON.stringify(pendingList));
+    AppState.testimonials = approvedList;
+    AppState.pendingReviews = pendingList;
+
+    return reviewToApprove;
+};
+
+window.handleSupportSubmit = function(event) {
+    event.preventDefault();
+    const form = document.getElementById('support-form');
+    window.clearFormErrors(form);
+
+    const name = document.getElementById('support-name').value.trim();
+    const phone = document.getElementById('support-phone').value.trim();
+    const email = document.getElementById('support-email').value.trim();
+    const orderId = document.getElementById('support-order').value.trim();
+    const category = document.getElementById('support-category').value;
+    const message = document.getElementById('support-message').value.trim();
+    const statusField = document.getElementById('support-form-status');
+
+    let valid = true;
+    if (!name) {
+        valid = false;
+        window.setFieldError(document.getElementById('support-name'), 'Name is required.');
+    }
+    if (!phone) {
+        valid = false;
+        window.setFieldError(document.getElementById('support-phone'), 'Phone number is required.');
+    } else if (!window.validatePhoneNumber(phone)) {
+        valid = false;
+        window.setFieldError(document.getElementById('support-phone'), 'Enter a valid 10-digit phone number.');
+    }
+    if (email && !window.validateEmailAddress(email)) {
+        valid = false;
+        window.setFieldError(document.getElementById('support-email'), 'Enter a valid email address.');
+    }
+    if (!category) {
+        valid = false;
+        window.setFieldError(document.getElementById('support-category'), 'Please select a category.');
+    }
+    if (!message) {
+        valid = false;
+        window.setFieldError(document.getElementById('support-message'), 'Please describe the issue.');
+    }
+
+    if (!valid) {
+        if (statusField) {
+            statusField.style.display = 'block';
+            statusField.textContent = 'Please correct the highlighted fields and try again.';
+        }
+        return;
+    }
+
+    const newRequest = {
+        name,
+        phone,
+        email: email || null,
+        orderId: orderId || null,
+        category,
+        message,
+        status: 'received',
+        requestedAt: new Date().toISOString()
+    };
+
+    const requests = JSON.parse(localStorage.getItem('boutique_support_requests') || '[]');
+    requests.unshift(newRequest);
+    localStorage.setItem('boutique_support_requests', JSON.stringify(requests));
+    AppState.supportRequests = requests;
+
+    const formWrapper = document.getElementById('support-form-wrapper');
+    if (formWrapper) {
+        formWrapper.innerHTML = `
+            <div class="support-success-card">
+                <div class="support-success-icon"><i class="fas fa-check-circle"></i></div>
+                <h3>Your support request has been received.</h3>
+                <p>Our team will contact you shortly.</p>
+            </div>
+        `;
+    }
+
+    window.showToast('Support request sent successfully. Our team will contact you shortly.', 'success');
 };
 
 // 4. Contact Form Submission
 window.handleContactSubmit = function(event) {
     event.preventDefault();
-    const name = document.getElementById('con-name').value;
-    const phone = document.getElementById('con-phone').value;
-    
-    alert(`Thank you ${name}! We have received your query. Our boutique tailor master will call you back on +91 ${phone} shortly.`);
-    event.target.reset();
+    const form = document.getElementById('contact-message-form');
+    window.clearFormErrors(form);
+
+    const name = document.getElementById('con-name').value.trim();
+    const phone = document.getElementById('con-phone').value.trim();
+    const email = document.getElementById('con-email').value.trim();
+    const inquiryType = document.getElementById('con-inquiry').value;
+    const message = document.getElementById('con-message').value.trim();
+    const statusField = document.getElementById('contact-form-status');
+
+    let valid = true;
+    if (!name) {
+        valid = false;
+        window.setFieldError(document.getElementById('con-name'), 'Full name is required.');
+    }
+    if (!phone) {
+        valid = false;
+        window.setFieldError(document.getElementById('con-phone'), 'Phone number is required.');
+    } else if (!window.validatePhoneNumber(phone)) {
+        valid = false;
+        window.setFieldError(document.getElementById('con-phone'), 'Enter a valid 10-digit phone number.');
+    }
+    if (email && !window.validateEmailAddress(email)) {
+        valid = false;
+        window.setFieldError(document.getElementById('con-email'), 'Enter a valid email address.');
+    }
+    if (!inquiryType) {
+        valid = false;
+        window.setFieldError(document.getElementById('con-inquiry'), 'Please select an inquiry type.');
+    }
+    if (!message) {
+        valid = false;
+        window.setFieldError(document.getElementById('con-message'), 'Message is required.');
+    }
+
+    if (!valid) {
+        if (statusField) {
+            statusField.style.display = 'block';
+            statusField.textContent = 'Please fix the highlighted fields before sending your inquiry.';
+        }
+        return;
+    }
+
+    const contactRequest = {
+        id: `contact_${Date.now()}`,
+        name,
+        phone,
+        email: email || null,
+        inquiryType,
+        message,
+        submittedAt: new Date().toISOString(),
+        status: 'new'
+    };
+
+    const requests = JSON.parse(localStorage.getItem('boutique_contact_requests') || '[]');
+    requests.unshift(contactRequest);
+    localStorage.setItem('boutique_contact_requests', JSON.stringify(requests));
+    AppState.contactRequests = requests;
+
+    const successCard = document.getElementById('contact-success-message');
+    const contactForm = document.getElementById('contact-message-form');
+    if (contactForm) {
+        contactForm.style.display = 'none';
+    }
+    if (successCard) {
+        successCard.style.display = 'block';
+    }
+
+    window.showToast('Thank you for contacting us. Our boutique team will get back to you shortly.', 'success');
 };
 
 // 5. Auth / Accounts management
@@ -1056,53 +1784,141 @@ window.handleLoginSubmit = function(event) {
     window.location.hash = '#profile';
 };
 
-window.handleSignupSubmit = function(event) {
-    event.preventDefault();
-    const name = document.getElementById('sign-name').value;
-    const email = document.getElementById('sign-email').value;
-    const phone = document.getElementById('sign-phone').value;
-
-    const newUser = {
-        name: name,
-        email: email,
-        phone: phone
-    };
-
-    localStorage.setItem('boutique_user', JSON.stringify(newUser));
-    AppState.currentUser = newUser;
-
-    // Save default mock booking to profile page to populate data for new users
-    const userBookings = JSON.parse(localStorage.getItem('boutique_bookings') || '[]');
-    const hasBooking = userBookings.some(b => b.phone === phone);
-    if (!hasBooking) {
-        userBookings.push({
-            ref: 'BTN-753951',
-            name: name,
-            phone: phone,
-            email: email,
-            service: 'Designer Blouse & Petticoat',
-            pickupDate: new Date(Date.now() + 86400000 * 2).toISOString().split('T')[0], // 2 days later
-            pickupTime: '12:00 PM - 03:00 PM',
-            address: 'Basharatpur Main Road, Gorakhpur',
-            notes: 'Keep front neck depth 7.5 inch and back hook closure style.',
-            provideMaterial: true,
-            status: 'pending',
-            timestamp: new Date().toISOString()
-        });
-        localStorage.setItem('boutique_bookings', JSON.stringify(userBookings));
-        AppState.bookings = userBookings;
-    }
-
-    window.location.hash = '#profile';
-};
-
 window.handleLogout = function() {
     localStorage.removeItem('boutique_user');
     AppState.currentUser = null;
     window.location.hash = '#home';
 };
 
+window.clearFieldError = function(input) {
+    if (!input) return;
+    const sibling = input.nextElementSibling;
+    if (sibling && sibling.classList.contains('field-error')) {
+        sibling.remove();
+    }
+    input.classList.remove('input-error');
+};
+
+window.clearFormErrors = function(form) {
+    if (!form) return;
+    form.querySelectorAll('.field-error').forEach(el => el.remove());
+    form.querySelectorAll('.input-error').forEach(input => input.classList.remove('input-error'));
+    const status = form.querySelector('.form-error');
+    if (status) {
+        status.style.display = 'none';
+        status.textContent = '';
+    }
+};
+
+window.setFieldError = function(input, message) {
+    if (!input) return;
+    window.clearFieldError(input);
+    const error = document.createElement('div');
+    error.className = 'field-error';
+    error.textContent = message;
+    input.classList.add('input-error');
+    if (input.parentNode) {
+        input.parentNode.insertBefore(error, input.nextSibling);
+    }
+};
+
+window.validatePhoneNumber = function(phone) {
+    const digits = (phone || '').replace(/\D/g, '');
+    return digits.length === 10 || (digits.length === 12 && digits.startsWith('91'));
+};
+
+window.validateEmailAddress = function(email) {
+    if (!email) return false;
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+};
+
+window.isGorakhpurCity = function(city) {
+    const targetCity = (CITY || 'Gorakhpur').trim().toLowerCase();
+    return (city || '').trim().toLowerCase().includes(targetCity);
+};
+
 // Start the application on DOM Content Loaded
 document.addEventListener('DOMContentLoaded', () => {
     AppState.init();
 });
+
+// Lightweight page controller for static sections and mobile nav
+(function() {
+    function setYear() {
+        const y = new Date().getFullYear();
+        const el = document.getElementById('year');
+        if (el) el.textContent = y;
+    }
+
+    function toggleNav() {
+        const buttons = Array.from(document.querySelectorAll('.nav-toggle, .hamburger'));
+        const menu = document.getElementById('site-menu');
+        if (!menu) return;
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const nextOpen = !menu.classList.contains('open');
+                menu.classList.toggle('open');
+                btn.classList.toggle('open', nextOpen);
+                btn.setAttribute('aria-expanded', String(nextOpen));
+            });
+        });
+    }
+
+    function showSectionFromHash() {
+        const hash = (window.location.hash || '#home').replace('#','');
+        const sections = document.querySelectorAll('.page-section');
+        sections.forEach(s => s.classList.remove('active'));
+        const target = document.getElementById(hash);
+        if (target) target.classList.add('active');
+    }
+
+    function setupRouteLinks() {
+        const links = document.querySelectorAll('[data-route]');
+        links.forEach(a => {
+            a.addEventListener('click', (e) => {
+                const href = a.getAttribute('href') || '#home';
+                window.location.hash = href;
+                e.preventDefault();
+                showSectionFromHash();
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        setYear();
+        setupRouteLinks();
+        showSectionFromHash();
+        window.addEventListener('hashchange', showSectionFromHash);
+    });
+})();
+
+/* ==========================================================================
+   TOAST NOTIFICATION SYSTEM
+   ========================================================================== */
+window.showToast = function(message, type = 'success', duration = 4000) {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        container.className = 'toast-container';
+        container.setAttribute('role', 'status');
+        container.setAttribute('aria-live', 'polite');
+        container.setAttribute('aria-atomic', 'true');
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+
+    const icon = type === 'success' ? '✓' : '✕';
+    toast.innerHTML = `<span style="font-weight:700;font-size:1.1rem">${icon}</span> ${message}`;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.animation = 'toastOut 0.35s cubic-bezier(0.25, 0.8, 0.25, 1) forwards';
+        setTimeout(() => {
+            if (toast.parentNode) toast.parentNode.removeChild(toast);
+        }, 350);
+    }, duration);
+};

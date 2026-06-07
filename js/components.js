@@ -4,127 +4,130 @@
  * ==========================================================================
  */
 
+const COMPONENT_CONFIG = window.SiteConfig || {};
+
 window.Components = {
     // 1. Header Component
     Header: function(activeRoute = 'home') {
-        const routes = [
+        const routes = COMPONENT_CONFIG.routeLinks || [
             { id: 'home', label: 'Home' },
             { id: 'services', label: 'Services' },
             { id: 'designs', label: 'Designs' },
             { id: 'pricing', label: 'Pricing' },
             { id: 'book', label: 'Book Order' },
             { id: 'reviews', label: 'Reviews' },
+            { id: 'support', label: 'Support' },
             { id: 'help', label: 'Help Desk' },
-            { id: 'contact', label: 'Contact' }
+            { id: 'contact', label: 'Contact' },
+            { id: 'admin', label: 'Admin' }
         ];
 
         let navLinksHTML = routes.map(r => `
             <li>
-                <a href="#${r.id}" class="nav-link ${activeRoute === r.id ? 'active' : ''}" data-route="${r.id}">
+                <a href="#${r.id}" class="nav-link ${activeRoute === r.id ? 'active' : ''}" aria-current="${activeRoute === r.id ? 'page' : 'false'}" data-route="${r.id}">
                     ${r.label}
                 </a>
             </li>
         `).join('');
 
-        // Add Login / Sign Up state check
+                // Add Login / Sign Up state check
         const currentUser = JSON.parse(localStorage.getItem('boutique_user') || 'null');
         const authBtnHTML = currentUser 
             ? `<li><a href="#profile" class="nav-cta" data-route="profile"><i class="fas fa-user-circle"></i> Hi, ${currentUser.name.split(' ')[0]}</a></li>`
             : `<li><a href="#login" class="nav-cta" data-route="login">Login / Sign Up</a></li>`;
 
         return `
-            <div class="container header-container">
-                <a href="#home" class="logo-link" data-route="home">
-                    <span class="logo-text">Your Boutique Name</span>
-                    <span class="logo-sub">Gorakhpur Tailoring</span>
-                </a>
-                <nav>
-                    <ul class="nav-menu" id="nav-menu-list">
-                        ${navLinksHTML}
-                        ${authBtnHTML}
-                    </ul>
-                </nav>
-                <button class="hamburger" id="hamburger-btn" aria-label="Toggle Navigation">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
-        `;
+            <div class="offer-banner">${COMPONENT_CONFIG.offerBanner || 'Free Pickup on Your First Order | Currently serving Gorakhpur City'}</div>
+            <header class="site-header">
+                            <div class="container header-inner">
+                                <div class="brand">
+                                    <a href="#home" class="logo-link" data-route="home">
+                                        <div class="logo">${COMPONENT_CONFIG.businessName || 'Your Boutique Name'}</div>
+                                    </a>
+                                    <div class="tagline">${COMPONENT_CONFIG.brandTagline || 'Custom Tailoring for Every Beautiful Occasion'}</div>
+                                </div>
+
+                                <nav class="site-nav" aria-label="Primary navigation">
+                                    <button class="nav-toggle" aria-expanded="false" aria-controls="site-menu">Menu</button>
+                                    <ul id="site-menu" class="nav-list">
+                                        ${navLinksHTML}
+                                        ${authBtnHTML}
+                                    </ul>
+                                </nav>
+
+                                <button class="hamburger" id="hamburger-btn" aria-label="Toggle Navigation">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                </button>
+                            </div>
+                        </header>
+                `;
     },
 
     // 2. Footer Component
-    Footer: function() {
-        return `
-            <div class="container">
-                <div class="footer-grid">
-                    <div class="footer-about">
-                        <h3>Your Boutique Name</h3>
-                        <p>“Custom Tailoring for Every Beautiful Occasion.” We offer premium custom-stitching services for women in Gorakhpur. Provide your own cloth, and let us stitch magic for you.</p>
-                        <div class="footer-socials">
-                            <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="social-link" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
-                            <a href="#" class="social-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                        </div>
-                    </div>
-                    <div class="footer-links-col">
-                        <h4>Explore</h4>
-                        <ul class="footer-links-list">
-                            <li><a href="#home">Home</a></li>
-                            <li><a href="#services">Our Services</a></li>
-                            <li><a href="#designs">Design Gallery</a></li>
-                            <li><a href="#pricing">Stitching Pricing</a></li>
-                            <li><a href="#book">Book Stitching Order</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-links-col">
-                        <h4>Customer Care</h4>
-                        <ul class="footer-links-list">
-                            <li><a href="#reviews">Reviews & Ratings</a></li>
-                            <li><a href="#help">Help Desk / FAQs</a></li>
-                            <li><a href="#contact">Contact Us</a></li>
-                            <li><a href="#login">My Account</a></li>
-                            <li><a href="#help">Privacy Policy</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-links-col">
-                        <h4>Get In Touch</h4>
-                        <div class="footer-contact-info">
-                            <div class="footer-contact-item">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>123, Park Road, Civil Lines, Gorakhpur, Uttar Pradesh, 273001</span>
+        Footer: function() {
+                return `
+                        <footer class="site-footer">
+                            <div class="container footer-grid">
+                                <div class="footer-about">
+                                    <h3>${COMPONENT_CONFIG.businessName || 'Your Boutique Name'}</h3>
+                                    <p>${COMPONENT_CONFIG.footerDescription || 'Premium women’s boutique tailoring service in Gorakhpur for blouse, lehenga, suits, bridal wear, alterations, and custom designs.'}</p>
+                                    <div class="footer-socials">
+                                        ${ (COMPONENT_CONFIG.socialLinks || []).map(link => `<a href="${link.url}" class="social-link">${link.name}</a>`).join('') }
+                                    </div>
+                                </div>
+
+                                <div class="footer-col">
+                                    <h4>Quick Links</h4>
+                                    <ul>
+                                        <li><a href="#home">Home</a></li>
+                                        <li><a href="#services">Services</a></li>
+                                        <li><a href="#designs">Designs</a></li>
+                                        <li><a href="#pricing">Pricing</a></li>
+                                        <li><a href="#book">Book Order</a></li>
+                                        <li><a href="#reviews">Reviews</a></li>
+                                        <li><a href="#help">Help Desk</a></li>
+                                        <li><a href="#contact">Contact</a></li>
+                                        <li><a href="#admin">Admin</a></li>
+                                    </ul>
+                                </div>
+
+                                <div class="footer-col">
+                                    <h4>Services</h4>
+                                    <ul>
+                                        <li><a href="#">Blouse Stitching</a></li>
+                                        <li><a href="#">Lehenga Stitching</a></li>
+                                        <li><a href="#">Suit Stitching</a></li>
+                                        <li><a href="#">Bridal Wear</a></li>
+                                        <li><a href="#">Alterations</a></li>
+                                    </ul>
+                                </div>
+
+                                <div class="footer-col">
+                                    <h4>Contact</h4>
+                                    <p>Phone: <a href="${COMPONENT_CONFIG.getPhoneHref ? COMPONENT_CONFIG.getPhoneHref() : 'tel:+919876543210'}">${COMPONENT_CONFIG.phoneDisplay || '+91 98765 43210'}</a></p>
+                                    <p>Email: <a href="${COMPONENT_CONFIG.getEmailHref ? COMPONENT_CONFIG.getEmailHref() : 'mailto:support@example.com'}">${COMPONENT_CONFIG.email || 'support@example.com'}</a></p>
+                                    <p>Address: ${COMPONENT_CONFIG.address || 'Gorakhpur, Uttar Pradesh'}</p>
+                                    <p><a href="${COMPONENT_CONFIG.getWhatsAppUrl ? COMPONENT_CONFIG.getWhatsAppUrl() : 'https://wa.me/919876543210?text=Hello%2C%20I%20want%20help%20with%20boutique%20stitching%20services.'}" target="_blank" rel="noopener">Chat on WhatsApp</a></p>
+                                </div>
                             </div>
-                            <div class="footer-contact-item">
-                                <i class="fas fa-phone-alt"></i>
-                                <span>+91 98765 43210</span>
+
+                            <div class="footer-bottom container">
+                                <div>© <span id="year"></span> ${COMPONENT_CONFIG.businessName || 'Your Boutique Name'}. All rights reserved.</div>
                             </div>
-                            <div class="footer-contact-item">
-                                <i class="fas fa-envelope"></i>
-                                <span>info@yourboutiquename.com</span>
-                            </div>
-                            <div class="footer-contact-item">
-                                <i class="fas fa-clock"></i>
-                                <span>Mon - Sat: 10:00 AM - 8:00 PM<br>Sunday: Closed</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer-bottom">
-                    <p>&copy; ${new Date().getFullYear()} Your Boutique Name. All Rights Reserved. Custom Tailored in Gorakhpur.</p>
-                    <p>Designed with <i class="fas fa-heart" style="color: #f4a4b4;"></i> for Gorakhpur's beautiful women.</p>
-                </div>
-            </div>
-        `;
-    },
+                        </footer>
+                `;
+        },
 
     // 3. WhatsApp Floating Button
-    WhatsAppButton: function(phoneNumber = '919876543210', message = 'Hello! I am interested in custom tailoring services for my dress. Could you please help me with the design and bookings?') {
-        const urlEncodedMsg = encodeURIComponent(message);
-        const waUrl = `https://wa.me/${phoneNumber}?text=${urlEncodedMsg}`;
+    WhatsAppButton: function(phoneNumber = COMPONENT_CONFIG.whatsappNumber, message = COMPONENT_CONFIG.whatsappMessage) {
+        const urlEncodedMsg = encodeURIComponent(message || COMPONENT_CONFIG.whatsappMessage);
+        const waUrl = `https://wa.me/${phoneNumber || COMPONENT_CONFIG.whatsappNumber}?text=${urlEncodedMsg}`;
         return `
             <a href="${waUrl}" class="whatsapp-float-btn" target="_blank" rel="noopener noreferrer" aria-label="Contact Us on WhatsApp" title="Chat on WhatsApp">
-                <i class="fab fa-whatsapp"></i>
+                <span class="whatsapp-dot"></span>
+                <i class="fab fa-whatsapp" aria-hidden="true"></i>
             </a>
         `;
     },
@@ -134,7 +137,7 @@ window.Components = {
         return `
             <div class="service-card" data-service-id="${service.id}">
                 <div class="service-img-container">
-                    <img class="service-img" src="${service.image}" alt="${service.name}" loading="lazy">
+                    <img class="service-img" src="${service.image}" alt="${service.name}" loading="lazy" onerror="this.onerror=null;this.src='';this.style.background='linear-gradient(135deg,#ffeef1 0%,#f5eedf 100%)';this.style.minHeight='240px';this.removeAttribute('src');" >
                     <span class="service-badge">${service.category}</span>
                 </div>
                 <div class="service-info">
@@ -151,18 +154,32 @@ window.Components = {
 
     // 5. Design Card Component
     DesignCard: function(design) {
+        const stars = Array.from({ length: 5 }, (_, i) => `
+            <i class="${i < design.rating ? 'fas' : 'far'} fa-star"></i>
+        `).join('');
+
         return `
             <div class="design-card" data-category="${design.category}">
                 <div class="design-img-box">
-                    <img class="design-img" src="${design.image}" alt="${design.title}" loading="lazy">
+                    <div class="placeholder-image-sm">
+                        <div class="placeholder-inner">
+                            <i class="fas fa-image"></i>
+                            <span>Design Preview</span>
+                        </div>
+                    </div>
                     <div class="design-overlay">
                         <span class="design-tag">${design.category}</span>
                         <h3 class="design-title">${design.title}</h3>
                         <div class="design-meta">
-                            <span>Stitch Style: ${design.style}</span>
-                            <span><i class="far fa-heart"></i> ${design.likes || 12}</span>
+                            <span>${design.style}</span>
                         </div>
                     </div>
+                </div>
+                <div class="design-details">
+                    <p class="design-desc">${design.description}</p>
+                    <div class="design-rating">${stars} <span>${design.rating}.0</span></div>
+                    <p class="design-review">“${design.review}”</p>
+                    <a class="btn btn-primary btn-block" href="#book" data-route>Book Similar Design</a>
                 </div>
             </div>
         `;
@@ -170,9 +187,13 @@ window.Components = {
 
     // 6. Testimonial / Review Card Component
     TestimonialCard: function(testimonial) {
-        const stars = Array(5).fill(0).map((_, i) => 
-            `<i class="${i < testimonial.rating ? 'fas' : 'far'} fa-star"></i>`
-        ).join('');
+        const fullStars = Math.floor(testimonial.rating);
+        const halfStar = testimonial.rating % 1 === 0.5;
+        const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+        const stars = Array(fullStars).fill('<i class="fas fa-star"></i>')
+            .concat(halfStar ? ['<i class="fas fa-star-half-alt"></i>'] : [])
+            .concat(Array(emptyStars).fill('<i class="far fa-star"></i>'))
+            .join('');
 
         const initials = testimonial.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 
@@ -183,34 +204,27 @@ window.Components = {
                         <div class="testimonial-avatar">${initials}</div>
                         <div class="testimonial-user-details">
                             <h4>${testimonial.name}</h4>
-                            <span class="testimonial-service-tag"><i class="fas fa-scissors"></i> Stitched: ${testimonial.service}</span>
+                            <p class="testimonial-meta">${testimonial.locality} • ${testimonial.service}</p>
                         </div>
                     </div>
                     <div class="testimonial-stars">${stars}</div>
                 </div>
                 <p class="testimonial-text">"${testimonial.comment}"</p>
-                <div class="testimonial-date">${testimonial.date || 'Recently'}</div>
             </div>
         `;
     },
 
     // 7. Pricing Card Component
     PricingCard: function(pricing) {
-        let featuresHTML = pricing.features.map(f => `
-            <li><i class="fas fa-check"></i> ${f}</li>
-        `).join('');
-
         return `
             <div class="pricing-card ${pricing.featured ? 'featured' : ''}">
-                ${pricing.featured ? '<div class="pricing-featured-tag">Most Popular</div>' : ''}
+                ${pricing.featured ? '<div class="pricing-featured-tag">Our Pick</div>' : ''}
                 <div class="pricing-icon"><i class="${pricing.icon}"></i></div>
                 <h3 class="pricing-name">${pricing.name}</h3>
-                <div class="pricing-cost">₹${pricing.price}<span>/stitching</span></div>
-                <ul class="pricing-features-list">
-                    ${featuresHTML}
-                </ul>
+                <div class="pricing-cost">Starting from <span>₹${pricing.price}</span></div>
+                <p class="pricing-description">${pricing.description}</p>
                 <a href="#book" class="btn ${pricing.featured ? 'btn-primary' : 'btn-secondary'} pricing-btn" data-service-name="${pricing.name}">
-                    Book Stitching
+                    Book Stitching Order
                 </a>
             </div>
         `;
@@ -220,11 +234,11 @@ window.Components = {
     FAQAccordion: function(faq, index) {
         return `
             <div class="faq-item" id="faq-item-${index}">
-                <div class="faq-header" onclick="window.toggleFAQ(${index})">
+                <button class="faq-header" type="button" aria-expanded="false" aria-controls="faq-body-${index}" onclick="window.toggleFAQ(${index})">
                     <span>${faq.question}</span>
-                    <i class="fas fa-chevron-down faq-icon-indicator"></i>
-                </div>
-                <div class="faq-body" id="faq-body-${index}">
+                    <i class="fas fa-chevron-down faq-icon-indicator" aria-hidden="true"></i>
+                </button>
+                <div class="faq-body" id="faq-body-${index}" aria-hidden="true">
                     <div class="faq-content">
                         ${faq.answer}
                     </div>
@@ -312,32 +326,57 @@ window.Components = {
 
     // 10. Review Form Component
     ReviewForm: function(servicesList = []) {
-        let serviceOptions = servicesList.map(s => `
-            <option value="${s.name}">${s.name}</option>
+        const reviewOptions = servicesList.length ? servicesList : [
+            'Blouse Stitching',
+            'Designer Blouse',
+            'Petticoat Stitching',
+            'Lehenga Stitching',
+            'Suit Stitching',
+            'Salwar Suit',
+            'Kurti Stitching',
+            'Bridal Wear',
+            'Wedding Wear',
+            'Party Wear',
+            'Alteration',
+            'Custom Designer Outfit',
+            'Other'
+        ];
+
+        const serviceOptions = reviewOptions.map(option => `
+            <option value="${option}">${option}</option>
         `).join('');
 
         return `
             <div class="review-form-card">
-                <h3>Share Your Experience</h3>
+                <h3>Share Your Review</h3>
                 <form id="customer-review-form" onsubmit="window.handleReviewSubmit(event)">
+                    <div id="review-form-status" class="form-status"></div>
+
                     <div class="form-group">
-                        <label class="form-label" for="rev-name">Your Name *</label>
-                        <input class="form-input" type="text" id="rev-name" required placeholder="Your Name">
+                        <label class="form-label" for="rev-name">Customer name *</label>
+                        <input class="form-input" type="text" id="rev-name" name="rev-name" required placeholder="e.g., Priya Sharma">
                     </div>
-                    
+
                     <div class="form-group">
-                        <label class="form-label" for="rev-service">What did you stitch? *</label>
-                        <select class="form-select" id="rev-service" required>
-                            <option value="" disabled selected>-- Select Outfit --</option>
+                        <label class="form-label" for="rev-phone">Phone number *</label>
+                        <input class="form-input" type="tel" id="rev-phone" name="rev-phone" required placeholder="+91 98765 43210">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="rev-email">Email address <span class="form-note">optional</span></label>
+                        <input class="form-input" type="email" id="rev-email" name="rev-email" placeholder="you@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="rev-service">Service used *</label>
+                        <select class="form-select" id="rev-service" name="rev-service" required>
+                            <option value="" disabled selected>Select a service</option>
                             ${serviceOptions}
-                            <option value="Custom Lehenga">Bridal Lehenga</option>
-                            <option value="Party Wear Dress">Party Wear Outfit</option>
-                            <option value="Alterations">Alterations</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Your Rating *</label>
+                        <label class="form-label">Rating *</label>
                         <div class="star-rating-select" id="review-stars-container">
                             <i class="fas fa-star active" data-rating="1" onclick="window.setReviewRating(1)"></i>
                             <i class="fas fa-star active" data-rating="2" onclick="window.setReviewRating(2)"></i>
@@ -345,17 +384,80 @@ window.Components = {
                             <i class="fas fa-star active" data-rating="4" onclick="window.setReviewRating(4)"></i>
                             <i class="fas fa-star active" data-rating="5" onclick="window.setReviewRating(5)"></i>
                         </div>
-                        <input type="hidden" id="rev-rating" value="5">
+                        <input type="hidden" id="rev-rating" name="rev-rating" value="5">
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="rev-comment">Review Details *</label>
-                        <textarea class="form-textarea" id="rev-comment" required placeholder="Tell other Gorakhpur customers about the fit, stitching finishing, timing, and service quality..."></textarea>
+                        <label class="form-label" for="rev-comment">Review message *</label>
+                        <textarea class="form-textarea" id="rev-comment" name="rev-comment" required placeholder="Share your experience with fitting, finishing, delivery, and service..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="rev-image">Upload image <span class="form-note">optional</span></label>
+                        <input class="form-input" type="file" id="rev-image" name="rev-image" accept="image/*">
                     </div>
 
                     <button class="btn btn-gold booking-submit-btn" type="submit">
                         <i class="fas fa-paper-plane"></i> Submit Review
                     </button>
+                </form>
+            </div>
+        `;
+    },
+
+    // 11. Support Form Component
+    SupportForm: function() {
+        const categories = COMPONENT_CONFIG.supportCategories || [
+            'Booking issue',
+            'Pickup issue',
+            'Delivery issue',
+            'Fitting issue',
+            'Measurement issue',
+            'Pricing issue',
+            'Payment issue',
+            'Review issue',
+            'Other'
+        ];
+
+        const categoryOptions = categories.map(option => `
+            <option value="${option}">${option}</option>
+        `).join('');
+
+        return `
+            <div class="support-form-card">
+                <form id="support-form" onsubmit="window.handleSupportSubmit(event)">
+                    <div id="support-form-status" class="form-status"></div>
+
+                    <h3>Submit a support request</h3>
+
+                    <div class="form-group">
+                        <label class="form-label" for="support-name">Full name *</label>
+                        <input class="form-input" type="text" id="support-name" name="support-name" required placeholder="Your full name" oninput="window.clearFieldError(this)">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="support-phone">Phone number *</label>
+                        <input class="form-input" type="tel" id="support-phone" name="support-phone" required placeholder="+91 98765 43210" oninput="window.clearFieldError(this)">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="support-email">Email address <span class="form-note">optional</span></label>
+                        <input class="form-input" type="email" id="support-email" name="support-email" placeholder="you@example.com" oninput="window.clearFieldError(this)">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="support-order">Order ID <span class="form-note">optional</span></label>
+                        <input class="form-input" type="text" id="support-order" name="support-order" placeholder="E.g. BTN-123456" oninput="window.clearFieldError(this)">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="support-category">Issue category *</label>
+                        <select class="form-select" id="support-category" name="support-category" required onchange="window.clearFieldError(this)">
+                            <option value="" disabled selected>Select category</option>
+                            ${categoryOptions}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="support-message">Message *</label>
+                        <textarea class="form-textarea" id="support-message" name="support-message" rows="5" required placeholder="Tell us what happened and how we can help..." oninput="window.clearFieldError(this)"></textarea>
+                    </div>
+                    <button class="btn btn-primary booking-submit-btn" type="submit">Submit support request</button>
                 </form>
             </div>
         `;
