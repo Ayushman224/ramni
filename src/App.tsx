@@ -4,18 +4,15 @@ import { Footer } from './components/layout/Footer'
 import { WhatsAppButton } from './components/common/WhatsAppButton'
 import { HomePage } from './pages/Home'
 import { ServicesPage } from './pages/Services'
-import { PricingPage } from './pages/Pricing'
 import { GalleryPage } from './pages/Gallery'
-import { ReviewsPage } from './pages/Reviews'
-import { BookOrderPage } from './pages/BookOrder'
-import { HelpDeskPage } from './pages/HelpDesk'
-import { SupportPage } from './pages/Support'
-import { ContactPage } from './pages/Contact'
+import { CartPage } from './pages/Cart'
+import { CheckoutPage } from './pages/Checkout'
 import { LoginPage } from './pages/Login'
 import { SignupPage } from './pages/Signup'
 import { AdminPage } from './pages/Admin'
-import { CartPage } from './pages/Cart'
-import { CheckoutPage } from './pages/Checkout'
+import { SearchPage } from './pages/Search'
+import { WishlistPage } from './pages/Wishlist'
+import { MyOrdersPage } from './pages/MyOrders'
 
 function App() {
   return (
@@ -25,18 +22,15 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/services" element={<ServicesPage />} />
-          <Route path="/pricing" element={<PricingPage />} />
           <Route path="/gallery" element={<GalleryPage />} />
-          <Route path="/reviews" element={<ReviewsPage />} />
-          <Route path="/book-order" element={<BookOrderPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/help-desk" element={<HelpDeskPage />} />
-          <Route path="/support" element={<SupportPage />} />
-          <Route path="/contact" element={<ContactPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/wishlist" element={<WishlistPage />} />
+          <Route path="/my-orders" element={<MyOrdersPage />} />
         </Routes>
       </main>
       <Footer />

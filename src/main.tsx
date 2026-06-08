@@ -8,6 +8,7 @@ import { AuthProvider } from './context/AuthContext.tsx'
 import { BookingProvider } from './context/BookingContext.tsx'
 import { ReviewProvider } from './context/ReviewContext.tsx'
 import { CartProvider } from './context/CartContext.tsx'
+import { WishlistProvider } from './context/WishlistContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -15,11 +16,13 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <AuthProvider>
           <CartProvider>
-            <BookingProvider>
-              <ReviewProvider>
-                <App />
-              </ReviewProvider>
-            </BookingProvider>
+            <WishlistProvider>
+              <BookingProvider>
+                <ReviewProvider>
+                  <App />
+                </ReviewProvider>
+              </BookingProvider>
+            </WishlistProvider>
           </CartProvider>
         </AuthProvider>
       </BrowserRouter>

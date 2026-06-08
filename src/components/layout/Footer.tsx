@@ -28,13 +28,26 @@ export const Footer = () => {
           <div>
             <h3 className="text-white font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              {SITE_CONFIG.routeLinks.slice(0, 6).map((link) => (
-                <li key={link.id}>
-                  <Link to={link.path} className="text-gray-400 hover:text-white transition-colors text-sm">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <Link to="/" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link to="/services" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  Services
+                </Link>
+              </li>
+              <li>
+                <Link to="/gallery" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  Designs
+                </Link>
+              </li>
+              <li>
+                <Link to="/my-orders" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  Track Order
+                </Link>
+              </li>
             </ul>
           </div>
           
