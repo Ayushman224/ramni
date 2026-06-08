@@ -3,8 +3,16 @@ import { SEO } from '../../components/ui/SEO'
 import { useBookings } from '../../context/BookingContext'
 import { useReviews } from '../../context/ReviewContext'
 import { SITE_CONFIG } from '../../config/site'
+import { CartItem } from '../../types'
 
 type Tab = 'bookings' | 'reviews' | 'pricing'
+
+const getItemName = (item: CartItem) => {
+  if ('name' in item.item) {
+    return item.item.name
+  }
+  return item.item.title
+}
 
 export const AdminPage = () => {
   const [activeTab, setActiveTab] = useState<Tab>('bookings')
@@ -49,7 +57,7 @@ export const AdminPage = () => {
                     <tr>
                       <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Booking ID</th>
                       <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Customer</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Service</th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Items</th>
                       <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Status</th>
                       <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Actions</th>
                     </tr>
@@ -62,13 +70,25 @@ export const AdminPage = () => {
                         </td>
                       </tr>
                     ) : (
-                      bookings.map((booking) => (
+                      bookings.map((booking: any) => (
                         <tr key={booking.id}>
                           <td className="px-4 py-3 text-sm font-mono text-gray-900">{booking.id}</td>
                           <td className="px-4 py-3 text-sm text-gray-900">
-                            {booking.fullName} ({booking.phonePrimary})
+                            {booking.customer?.fullName || booking.fullName} ({booking.customer?.phone || booking.phonePrimary})
                           </td>
-                          <td className="px-4 py-3 text-sm text-gray-900">{booking.garmentCategory}</td>
+                          <td className="px-4 py-3 text-sm text-gray-900">
+                            {booking.items ? (
+                              <div className="space-y-1">
+                                {booking.items.map((item: CartItem, idx: number) => (
+                                  <div key={idx}>
+                                    {getItemName(item)} x{item.quantity}
+                                  </div>
+                                ))}
+                              </div>
+                            ) : (
+                              booking.garmentCategory
+                            )}
+                          </td>
                           <td className="px-4 py-3">
                             <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                               booking.status === 'New' ? 'bg-blue-100 text-blue-800' :
