@@ -1,10 +1,11 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import { Customer } from '../types'
+import { Customer, CustomerAddress } from '../types'
 
 type AuthContextType = {
   currentUser: Customer | null
   login: (user: Customer) => void
   logout: () => void
+  addAddress: (address: Omit<CustomerAddress, 'id'>) => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -23,9 +24,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [])
 
-  const login = (user: Customer) => {
+  const updateUser = (user: Customer) => {
     localStorage.setItem('boutique_user', JSON.stringify(user))
     setCurrentUser(user)
+  }
+
+  const login = (user: Customer) => {
+    updateUser(user)
   }
 
   const logout = () => {
@@ -33,8 +38,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setCurrentUser(null)
   }
 
+  const addAddress = (address: Omit<CustomerAddress, 'id'>) => {
+    if (currentUser) {
+      const newAddress: CustomerAddress = { ...address, id: `addr-${Date.now()}` }
+      const updatedUser: Customer = {
+        ...currentUser,
+        addresses: [...(currentUser.addresses || []), newAddress]
+      }
+      updateUser(updatedUser)
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ currentUser, login, logout }}>
+    <AuthContext.Provider value={{ currentUser, login, logout, addAddress }}>
       {children}
     </AuthContext.Provider>
   )

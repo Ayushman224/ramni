@@ -1,11 +1,13 @@
 import { Link, useLocation } from 'react-router-dom'
 import { SITE_CONFIG } from '../../config/site'
 import { useState } from 'react'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, ShoppingBag } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
+import { useCart } from '../../context/CartContext'
 
 export const Header = () => {
   const { currentUser } = useAuth()
+  const { totalItems } = useCart()
   const location = useLocation()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -35,6 +37,14 @@ export const Header = () => {
                 {link.label}
               </Link>
             ))}
+            <Link to="/cart" className="relative">
+              <ShoppingBag size={24} className="text-gray-700 hover:text-pink-600" />
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 flex items-center justify-center bg-pink-600 text-white text-xs rounded-full w-5 h-5">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
             {currentUser ? (
               <Link
                 to="/profile"
@@ -52,13 +62,24 @@ export const Header = () => {
             )}
           </nav>
           
-          {/* Mobile Menu Toggle */}
-          <button 
-            onClick={() => setIsMenuOpen(!isMenuOpen)} 
-            className="md:hidden p-2 text-gray-700"
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile Actions */}
+          <div className="flex items-center gap-4">
+            <Link to="/cart" className="relative md:hidden">
+              <ShoppingBag size={24} className="text-gray-700" />
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 flex items-center justify-center bg-pink-600 text-white text-xs rounded-full w-5 h-5">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
+            {/* Mobile Menu Toggle */}
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)} 
+              className="md:hidden p-2 text-gray-700"
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </div>
       

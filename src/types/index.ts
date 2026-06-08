@@ -49,39 +49,44 @@ export type ServiceAreas = {
   [key: string]: string[]
 }
 
+export type CustomerAddress = {
+  id: string
+  label: 'Home' | 'Office' | 'Other'
+  fullAddress: string
+  landmark?: string
+  city: string
+  state: string
+  pincode: string
+}
+
 export type Customer = {
-  name: string
+  id: string
+  fullName: string
   phone: string
   phoneAlt?: string
   email: string
-  address?: string
-  state?: string
-  city?: string
-  pincode?: string
+  addresses: CustomerAddress[]
   password?: string
+}
+
+export type CartItem = {
+  id: string
+  type: 'service' | 'design'
+  item: Service | GalleryItem
+  quantity: number
+  designReference?: string
+  measurementPreference?: 'existing' | 'sample' | 'fresh'
+  notes?: string
 }
 
 export type BookingOrder = {
   id: string
-  fullName: string
-  email: string
-  phonePrimary: string
-  phoneAlt?: string
-  pickupAddress: string
-  pickupLandmark?: string
-  pickupState?: string
-  pickupCity: string
-  pickupPincode: string
-  garmentCategory: string
-  serviceType: string
-  fabricPickupOption?: string
-  preferredPickupDate?: string
-  preferredPickupTime?: string
-  measurementOption?: string
-  designReference?: string
-  specialInstructions?: string
-  locLat?: string
-  locLon?: string
+  customer: Customer
+  pickupDate?: string
+  pickupTime?: string
+  pickupOption?: string
+  address: CustomerAddress
+  items: CartItem[]
   status: 'New' | 'Confirmed' | 'Pickup Scheduled' | 'Cloth Picked Up' | 'Measurement Pending' | 'Stitching Started' | 'Trial/Fitting' | 'Ready for Delivery' | 'Delivered' | 'Cancelled'
   createdAt: string
   updatedAt: string

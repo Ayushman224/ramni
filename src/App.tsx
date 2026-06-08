@@ -14,6 +14,8 @@ import { ContactPage } from './pages/Contact'
 import { LoginPage } from './pages/Login'
 import { SignupPage } from './pages/Signup'
 import { AdminPage } from './pages/Admin'
+import { CartPage } from './pages/Cart'
+import { CheckoutPage } from './pages/Checkout'
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/reviews" element={<ReviewsPage />} />
           <Route path="/book-order" element={<BookOrderPage />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/help-desk" element={<HelpDeskPage />} />
           <Route path="/support" element={<SupportPage />} />
           <Route path="/contact" element={<ContactPage />} />

@@ -1,5 +1,7 @@
 import { GalleryItem } from '../../types'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useCart } from '../../context/CartContext'
 
 type GalleryCardProps = {
   item: GalleryItem
@@ -7,21 +9,47 @@ type GalleryCardProps = {
 
 export const GalleryCard = ({ item }: GalleryCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const navigate = useNavigate()
+  const { addToCart } = useCart()
+
+  const handleAddToCart = () => {
+    addToCart(item, 'design')
+  }
+
+  const handleBookSimilar = () => {
+    addToCart(item, 'design')
+    navigate('/checkout')
+  }
 
   return (
     <>
       <div 
-        className="group cursor-pointer rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all"
-        onClick={() => setIsModalOpen(true)}
+        className="group rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all"
       >
-        <img
-          src={`https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&auto=format&fit=crop&q=80`}
-          alt={item.title}
-          className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
-        />
+        <div onClick={() => setIsModalOpen(true)} className="cursor-pointer">
+          <img
+            src={`https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&auto=format&fit=crop&q=80`}
+            alt={item.title}
+            className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        </div>
         <div className="p-4 bg-white">
           <span className="text-xs uppercase text-pink-600 font-medium">{item.category}</span>
           <h4 className="text-lg font-semibold text-gray-900 mt-1">{item.title}</h4>
+          <div className="mt-3 flex items-center gap-2">
+            <button
+              onClick={handleAddToCart}
+              className="inline-flex items-center justify-center px-3 py-1.5 rounded-full text-xs font-medium bg-pink-100 text-pink-700 hover:bg-pink-200 transition-colors"
+            >
+              Add to Order
+            </button>
+            <button
+              onClick={handleBookSimilar}
+              className="inline-flex items-center justify-center px-3 py-1.5 rounded-full text-xs font-medium bg-pink-600 text-white hover:bg-pink-700 transition-colors"
+            >
+              Book Similar Design
+            </button>
+          </div>
         </div>
       </div>
 
@@ -47,6 +75,20 @@ export const GalleryCard = ({ item }: GalleryCardProps) => {
               <p className="text-gray-600 mt-3">{item.description}</p>
               <p className="mt-4 text-sm text-gray-500 italic">"{item.review}"</p>
               <p className="text-xs text-gray-400 mt-2">{item.style}</p>
+              <div className="mt-6 flex items-center gap-3">
+                <button
+                  onClick={handleAddToCart}
+                  className="inline-flex items-center justify-center px-4 py-2 rounded-full text-sm font-medium bg-pink-100 text-pink-700 hover:bg-pink-200 transition-colors"
+                >
+                  Add to Order
+                </button>
+                <button
+                  onClick={handleBookSimilar}
+                  className="inline-flex items-center justify-center px-4 py-2 rounded-full text-sm font-medium bg-pink-600 text-white hover:bg-pink-700 transition-colors"
+                >
+                  Book Similar Design
+                </button>
+              </div>
             </div>
           </div>
         </div>
